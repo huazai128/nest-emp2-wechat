@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="马克">
+    <meta name="keyword" content="马克">
+    <meta http-equiv="x-dns-prefetch-control" content="on" />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no' />
+    <link rel="dns-prefetch" href="https://admin.markiapp.com" />
+    <!-- EMP inject title -->
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    
+    <!-- EMP inject css -->
+    <% for (let i in htmlWebpackPlugin.options.files.css) { %>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.files.css[i] %>" /><% } %>
+    <!-- EMP inject js -->
+    <% for (let i in htmlWebpackPlugin.options.files.js) { %>
+    <script src="<%= htmlWebpackPlugin.options.files.js[i] %>"></script><% } %>
+</head>
+
+<body>
+  <div id="emp-root" >
+    <div>loading</div>
+  </div>
+</body>
+</html>

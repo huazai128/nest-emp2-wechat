@@ -1,0 +1,1 @@
+export const HTTP_UNAUTHORIZED_TEXT_DEFAULT = 'Unauthorized'

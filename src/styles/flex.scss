@@ -1,0 +1,295 @@
+.flex {
+    display: flex; // flex-direction: row; //主轴为水平方向，起点在左端
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column; //主轴为垂直方向，起点在上沿
+}
+
+.flex-center {
+    //垂直居中,水平居中
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+}
+
+.flex-hcenter {
+    //水平居中
+    display: flex;
+    justify-content: center;
+}
+
+.flex-vcenter {
+    //垂直居中
+    display: flex;
+    align-items: center;
+}
+
+.flex-col-center {
+    //垂直居中, 水平居中,  主轴为垂直方向，起点在上沿
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-col-vcenter {
+    //水平居中,  主轴为垂直方向，起点在上沿
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-no-shrink {
+    flex-shrink: 0;
+}
+
+.flex,
+.flex-row,
+.flex-col,
+.flex-center,
+.flex-hcenter,
+.flex-vcenter,
+.flex-col-center,
+.flex-col-vcenter {
+    box-sizing: border-box;
+    flex: 0 1 auto;
+
+    &.wrap {
+        //换行，第一行在上方
+        flex-wrap: wrap;
+    }
+
+    &.wrap-reverse {
+        //换行，第一行在上方
+        flex-wrap: wrap-reverse;
+    }
+
+    &.d-row-reverse {
+        //主轴为水平方向，起点在右端。
+        flex-direction: row-reverse;
+    }
+
+    &.d-col-reverse {
+        //主轴为垂直方向，起点在下沿
+        flex-direction: column-reverse;
+    }
+
+    &.d-column {
+        //主轴为垂直方向，起点在上沿
+        flex-direction: column;
+    }
+
+    &.jc-start {
+        //主轴的项目左对齐
+        justify-content: flex-start;
+    }
+
+    &.jc-center {
+        //主轴的项目居中
+        justify-content: center;
+    }
+
+    &.jc-end {
+        //主轴的项目右对齐
+        justify-content: flex-end;
+    }
+
+    &.jc-around {
+        //主轴的项目两侧的间隔相等
+        justify-content: space-around;
+    }
+
+    &.jc-between {
+        //两端对齐，项目之间的间隔都相等
+        justify-content: space-between;
+    }
+
+    &.ai-start {
+        //交叉轴的起点对齐
+        align-items: flex-start;
+    }
+
+    &.ai-center {
+        //交叉轴的中点对齐
+        align-items: center;
+    }
+
+    &.ai-end {
+        //交叉轴的终点对齐
+        align-items: flex-end;
+    }
+
+    &.ai-baseline {
+        //项目的第一行文字的基线对齐
+        align-items: baseline;
+    }
+
+    &.ai-stretch {
+        //(默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+        align-items: stretch;
+    }
+
+    &.ac-start {
+        //与交叉轴的起点对齐
+        align-content: flex-start;
+    }
+
+    &.ac-center {
+        //与交叉轴的终点对齐
+        align-content: center;
+    }
+
+    &.ac-end {
+        //与交叉轴的中点对齐
+        align-content: flex-end;
+    }
+
+    &.ac-around {
+        //与交叉轴两端对齐，轴线之间的间隔平均分布
+        align-content: space-around;
+    }
+
+    &.ac-between {
+        //每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍
+        align-content: space-between;
+    }
+}
+
+.flex-g-1 {
+    box-sizing: border-box;
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+}
+
+.flex-col-1,
+.flex-col-10,
+.flex-col-11,
+.flex-col-12,
+.flex-col-2,
+.flex-col-3,
+.flex-col-4,
+.flex-col-5,
+.flex-col-6,
+.flex-col-7,
+.flex-col-8,
+.flex-col-9 {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+
+.flex-col-1 {
+    flex-basis: 8.333%;
+    width: 8.333%;
+}
+
+.flex-col-2 {
+    flex-basis: 16.667%;
+    width: 16.667%;
+}
+
+.flex-col-3 {
+    flex-basis: 25%;
+    width: 25%;
+}
+
+.flex-col-4 {
+    flex-basis: 33.333%;
+    width: 33.333%;
+}
+
+.flex-col-5 {
+    flex-basis: 41.667%;
+    width: 41.667%;
+}
+
+.flex-col-6 {
+    flex-basis: 50%;
+    width: 50%;
+}
+
+.flex-col-7 {
+    flex-basis: 58.333%;
+    width: 58.333%;
+}
+
+.flex-col-8 {
+    flex-basis: 66.667%;
+    width: 66.667%;
+}
+
+.flex-col-9 {
+    flex-basis: 75%;
+    width: 75%;
+}
+
+.flex-col-10 {
+    flex-basis: 83.333%;
+    width: 83.333%;
+}
+
+.flex-col-11 {
+    flex-basis: 91.667%;
+    width: 91.667%;
+}
+
+.flex-col-12 {
+    flex-basis: 100%;
+    width: 100%;
+}
+
+.flex-col-offset-1 {
+    margin-left: 8.333%;
+}
+
+.flex-col-offset-2 {
+    margin-left: 16.667%;
+}
+
+.flex-col-offset-3 {
+    margin-left: 25%;
+}
+
+.flex-col-offset-4 {
+    margin-left: 33.333%;
+}
+
+.flex-col-offset-5 {
+    margin-left: 41.667%;
+}
+
+.flex-col-offset-6 {
+    margin-left: 50%;
+}
+
+.flex-col-offset-7 {
+    margin-left: 58.333%;
+}
+
+.flex-col-offset-8 {
+    margin-left: 66.667%;
+}
+
+.flex-col-offset-9 {
+    margin-left: 75%;
+}
+
+.flex-col-offset-10 {
+    margin-left: 83.333%;
+}
+
+.flex-col-offset-11 {
+    margin-left: 91.667%;
+}
+
+.flex-col-offset-2 {
+    margin-left: 100%;
+}
