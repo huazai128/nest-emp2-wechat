@@ -7,6 +7,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiService } from './api.service';
 
 @Controller('api')
+@UseGuards(ApiGuard)
 export class ApiConstroller {
 
     constructor(private readonly apiService: ApiService) { }
@@ -17,7 +18,7 @@ export class ApiConstroller {
      * @return {*} 
      * @memberof ApiConstroller
      */
-    @UseGuards(ApiGuard)
+
     @Responsor.api()
     @Get('transform')
     getTransform(@QueryParams('query', new TransformPipe()) data: HttpRequest) {
@@ -30,7 +31,6 @@ export class ApiConstroller {
      * @return {*} 
      * @memberof ApiConstroller
      */
-    @UseGuards(ApiGuard)
     @Responsor.api()
     @Post('transform')
     postTransform(@Body(new TransformPipe()) data: HttpRequest) {

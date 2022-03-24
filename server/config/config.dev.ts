@@ -20,7 +20,15 @@ const config: ConfigServer = {
 
 
     /* 微信相关配置 */
-    wxOpenAppId: 'wxc2b795ed9de3592a',
+    wxConfig:  {
+        appId: 'wx614c453e0d1dcd12',
+        appScrect: '19a02e4927d346484fc70327970457f9',
+        token: 'mima-wx',
+        encryptMessage: true,
+        encodingAesKey: 'encodingAesKey',
+        domain: 'https:// ',
+        authAppId: ''
+    }
 
 }
 

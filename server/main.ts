@@ -42,6 +42,7 @@ async function bootstrap() {
     morgan.token('userId', (req: Request) => {
         return get(req, 'cookies.userId') || get(req, 'session.user.userId') || ''
     })
+    
     app.use(morgan(':remote-addr - [:userId] - :remote-user ":method :url HTTP/:http-version" ":referrer" ":user-agent" :status :res[content-length] - :response-time ms'))
 
     app.useGlobalFilters(new HttpExceptionFilter())

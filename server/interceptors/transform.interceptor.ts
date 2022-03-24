@@ -28,7 +28,6 @@ export class TransformInterceptor<T>
         const { isApi } = getResponsorOptions(target)
         
         // 即时刷新session过期时间
-        req.session.touch();
         if (!isApi) {
             res.contentType('html')
         }

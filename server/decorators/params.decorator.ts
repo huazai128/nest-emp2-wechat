@@ -47,14 +47,14 @@ export const QueryParams = createParamDecorator((field: keyof QueryParamsResult,
         origin: request.headers.origin,
         referer: request.headers.referer,
     }
-    const { transformUrl: pUlr, ...otherParams } = request.params || {}
-    const { transformUrl: qUlr, ...otherQuery } = request.query || {}
+    const { transformUrl: pUlr, ...otherParams } = request.params 
+    const { transformUrl: qUlr, ...otherQuery } = request.query
 
     const user: UserInfo = (request.session as any).user || {}
 
     const result = {
-        params: (!!pUlr && { transformUrl: pUlr, transferData: { ...otherParams, userId: user.userId } }) || {},
-        query: (!!qUlr && { transformUrl: qUlr, transferData: { ...otherQuery, userId: user.userId } }) || {},
+        params: (!!pUlr && { transformUrl: pUlr, transferData: { ...otherParams, userId: user.userId } }) || request.query,
+        query: (!!qUlr && { transformUrl: qUlr, transferData: { ...otherQuery, userId: user.userId } }) || request.params,
         cookies: request.cookies,
         isAuthenticated: isAuthenticated,
         visitor,

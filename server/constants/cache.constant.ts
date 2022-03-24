@@ -1,0 +1,1 @@
+export const CACHE_ACCESS_TOKEN = 'CACHE_ACCESS_TOKEN'

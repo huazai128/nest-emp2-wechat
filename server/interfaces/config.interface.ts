@@ -12,5 +12,13 @@ export interface ConfigServer {
         defaultCacheTTL?: number
         username?: string
     }
-    wxOpenAppId?: string
+    wxConfig: {
+        appId: string
+        appScrect: string
+        token: string
+        encryptMessage: boolean,
+        encodingAesKey: string
+        domain: string
+        authAppId: string
+    }
 }

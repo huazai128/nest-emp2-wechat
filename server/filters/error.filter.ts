@@ -1,10 +1,10 @@
-import { isDevEnv } from "@app/app.env";
-import { UnAuthStatus } from "@app/constants/error.constant";
-import { ExceptionInfo, HttpResponseError } from "@app/interfaces/response.interface";
-import logger from "@app/utils/logger";
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
+import { ExceptionInfo, HttpResponseError } from "@app/interfaces/response.interface";
+import { UnAuthStatus } from "@app/constants/error.constant";
+import { isDevEnv } from "@app/app.env";
+import logger from "@app/utils/logger";
 import { Response, Request } from 'express'
-import { get, isString, isObject } from 'lodash'
+import { get, isString } from 'lodash'
 
 
 /**
@@ -19,16 +19,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-        const status = exception.getStatus && exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
+        const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
         let isApi = request.url.includes('/api/') 
-
-        let errorResponse: ExceptionInfo = !!exception.getResponse && exception.getResponse() as ExceptionInfo
+        const referer = request.get('referer') as string
+         
+        let errorResponse: ExceptionInfo = exception.getResponse?.() as ExceptionInfo
         errorResponse = get(errorResponse, 'response') || errorResponse;
         const errorMessage = get(errorResponse, 'message') || errorResponse
         const errorInfo = get(errorResponse, 'error')  || null
         const resultStatus = get(errorResponse, 'status') || status
         isApi = !!get(errorResponse, 'isApi')
 
+        let pageUrl: string;
+        if(isApi){//这里的判断有必要，只有是api时，才拿referer。
+            pageUrl = referer;
+        }else{
+            pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);
+        }
+        
         const data: HttpResponseError = {
             status: resultStatus,
             message: errorMessage,
@@ -48,8 +56,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
             request.session.destroy(() => {
                 logger.info('session已清除')
             });
-            request.cookies?.jwt && response.clearCookie('jwt');
-            return response.redirect('login')
+            response.clearCookie('jwt');
+            return response.redirect(`/wx/toAuth?redirectUrl=${ pageUrl }`)
         } else {
             return isApi ? response.status(status).json(data) : response.redirect('error')
         }
