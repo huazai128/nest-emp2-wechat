@@ -1,6 +1,7 @@
 import { Lang, ScopeEnum } from "@app/constants/text.constant";
+import { JsConfig } from "@app/interfaces/wechat.interface";
 import { Injectable } from "@nestjs/common";
-import {ApiConfigKit,HttpKit } from 'tnwx'
+import {ApiConfigKit,HttpKit, WeChat } from 'tnwx'
 import util from 'util'
 
 @Injectable()
@@ -11,20 +12,20 @@ export class WechatService{
     private userInfoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=%s";
     private checkTokenUrl = "https://api.weixin.qq.com/sns/auth?access_token=%s&openid=%s";
 
-     /**
+    /**
      * 获取授权链接
      * @param redirectUri 回调地址
      * @param scope 
      * @param state 
      */
-      public getAuthorizeUrl(redirectUri: string, scope: ScopeEnum, state?: string): string {
+    public getAuthorizeUrl(redirectUri: string, scope: ScopeEnum, state?: string): string {
         let url = util.format(this.authorizeUrl, ApiConfigKit.getApiConfig.getAppId, encodeURIComponent(redirectUri), scope);
         if (state) {
             url = url + "&state=" + state;
         }
-        console.log(url, 'url')
         return url + "#wechat_redirect";
     }
+
     /**
      * 通过code换取网页授权access_token
      * @param code 
@@ -34,7 +35,6 @@ export class WechatService{
             ApiConfigKit.getApiConfig.getAppScrect, code);
         return HttpKit.getHttpDelegate.httpGet(url);
     }
-
 
     /**
      * 刷新access_token
@@ -66,9 +66,42 @@ export class WechatService{
         return HttpKit.getHttpDelegate.httpGet(url);
     }
 
+    /**
+     * 获取jssdk
+     * @param {string} url
+     * @return {*}  {Promise<JsConfig>}
+     * @memberof WechatService
+     */
+    public async getSdk(url:string): Promise<JsConfig> {
+        const appId = ApiConfigKit.getApiConfig.getAppId
+        const timestamp = this.createTimestamp()
+        const nonceStr = this.createNonceStr()
+        const signature = await WeChat.jssdkSignature(nonceStr, timestamp, url);
+        return {
+            appId,
+            timestamp,
+            nonceStr,
+            signature,
+        }
+    }  
 
+    /**
+     * 生成随机字符串
+     * @private
+     * @returns {string} 
+     * @memberof JsSdkFile
+     */
+    private createNonceStr(): string {
+        return Math.random().toString(36).substr(2, 15);
+    }
 
-
-
-
+    /**
+     * 生成时间戳
+     * @private
+     * @returns {string} 
+     * @memberof JsSdkFile
+     */
+    private  createTimestamp(): string {
+        return Math.floor(Date.now() / 1000).toString()
+    }
 }

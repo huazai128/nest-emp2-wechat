@@ -9,7 +9,7 @@ export class WechatController {
     constructor(
         private readonly wechatService: WechatService
     ) {
-
+        
     }
 
     @Get('toAuth')

@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { Response, Request } from 'express'
 import { HttpResponseSuccess, ResponseStatus } from '@app/interfaces/response.interface';
 import { getResponsorOptions } from '@app/decorators/responsor.decorator';
+import { WechatService } from '@app/modules/wechat/wechat.service';
+import { JsConfig } from '@app/interfaces/wechat.interface';
 
 /**
  * 拦截
@@ -21,19 +23,26 @@ import { getResponsorOptions } from '@app/decorators/responsor.decorator';
 export class TransformInterceptor<T>
     implements NestInterceptor<T, T | HttpResponseSuccess<T>>
 {
+    private wechatService: WechatService
+    constructor() {
+        this.wechatService = new WechatService();
+    }
     intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T | HttpResponseSuccess<T>> | any {
-        const req = context.switchToHttp().getRequest<Request>();
         const res = context.switchToHttp().getResponse<Response>()
+        const req = context.switchToHttp().getResponse<Request>()
         const target = context.getHandler()
         const { isApi } = getResponsorOptions(target)
         
-        // 即时刷新session过期时间
         if (!isApi) {
             res.contentType('html')
         }
         return next.handle()
             .pipe(
-                map((data: any) => {
+                map(async(data: any) => {
+                    if(!isApi) {
+                        const url =('https' + '://' + req.get('Host') + req.originalUrl);
+                        data.jsConfig = await this.wechatService.getSdk(url);
+                    }
                     if (data.redirectUrl) return res.status(301).redirect(data.redirectUrl)
                     const result = isApi ? {
                         status: ResponseStatus.Success,

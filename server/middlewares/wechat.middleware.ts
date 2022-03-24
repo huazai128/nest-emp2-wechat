@@ -1,3 +1,5 @@
+import { ApiWhiteList } from "@app/constants/api.contant";
+import { RouterWhiteList } from "@app/constants/router.constant";
 import { Lang, ScopeEnum } from "@app/constants/text.constant";
 import { CustomError } from "@app/errors/custom.error";
 import { User } from "@app/interfaces/request.interface";
@@ -11,17 +13,17 @@ import { Request, Response, NextFunction} from 'express';
 export class WechatMiddleware implements NestMiddleware {
     constructor(
         private readonly wechatService: WechatService,
-        private readonly axiosService: AxiosService,
         private readonly authService: AuthService
     ) {
 
     }
     async use(req: Request, res: Response, next: NextFunction) {
-        const isApi = req.url.includes('/api/') 
+        const url = req.originalUrl as string
+        const isApi = url.includes('/api/') 
         const referer = req.get('referer') as string
         const user = req.session.user as User
         const code = req.query.code as string;  
-        if(!user?.userId) {
+        if(!user?.userId && !(RouterWhiteList.includes(url) || ApiWhiteList.includes(url))) {
             if(code) {
                const data =  await this.wechatService.getSnsAccessToken(code)
                const temp = JSON.parse(data.toString());
