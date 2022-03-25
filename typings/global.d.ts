@@ -6,7 +6,10 @@ declare interface Window {
  * 全局Store
  * @interface IStore
  */
-interface IStore {
+declare interface IStore {
     globalStore: IGlobalStore.GlobalStore
     authStore: IAuthStore.AuthStore
 }
+
+declare const wxLogin: any
+

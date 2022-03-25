@@ -1,7 +1,6 @@
 import { Lang, ScopeEnum } from "@app/constants/text.constant";
 import { QueryParams } from "@app/decorators/params.decorator";
-import { CustomError } from "@app/errors/custom.error";
-import { Controller, Get, Res, Req, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Res, Req } from "@nestjs/common";
 import { Response, Request } from "express";
 import { AuthService } from "../auth/auth.service";
 import { WechatService } from "./wechat.service";

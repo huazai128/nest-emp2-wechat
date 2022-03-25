@@ -15,7 +15,7 @@ export class AppMiddleware implements NestMiddleware {
     use(request: Request, response: Response, next: NextFunction) {
         const user = request.session.user as User
         if(!isDevEnv && request.isApp && !user.userId){
-            logger.info('来源为app')
+            logger.info('来源为app授权')
         }
         return next()
     }

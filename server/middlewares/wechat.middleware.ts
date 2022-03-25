@@ -1,5 +1,4 @@
 import { isDevEnv } from "@app/app.env";
-import { ApiWhiteList } from "@app/constants/api.contant";
 import { RouterWhiteList } from "@app/constants/router.constant";
 import { Lang, ScopeEnum } from "@app/constants/text.constant";
 import { CustomError } from "@app/errors/custom.error";
@@ -24,7 +23,6 @@ export class WechatMiddleware implements NestMiddleware {
 
     }
     async use(req: Request, res: Response, next: NextFunction) {
-        // 还没有判断浏览器来源
         const url = req.originalUrl as string
         const isApi = url.includes('/api/') 
         const user = req.session.user as User
