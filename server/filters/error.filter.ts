@@ -41,8 +41,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             data.error = data.error || `Not found`
             data.message = data.message || `Invalid API: ${request.method} > ${request.url}`
         }
-        
         const isUnAuth = UnAuthStatus.includes(resultStatus)
+        
+        logger.error(`错误拦截error:${JSON.stringify(data) }`)
+
         if (isUnAuth && !isApi) {
             const pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);
             request.session.destroy(() => {

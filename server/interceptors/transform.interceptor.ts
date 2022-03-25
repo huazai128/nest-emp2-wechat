@@ -31,6 +31,7 @@ export class TransformInterceptor<T>
         const req = context.switchToHttp().getResponse<Request>()
         const target = context.getHandler()
         const { isApi } = getResponsorOptions(target)
+       
         if (!isApi) {
             res.contentType('html')
         }
@@ -51,4 +52,6 @@ export class TransformInterceptor<T>
                 })
             );
     }
+
+    
 }

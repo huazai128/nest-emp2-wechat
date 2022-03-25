@@ -10,6 +10,11 @@ export class CorsMiddleware implements NestMiddleware {
         const getMethod = (method) => RequestMethod[method]
         const origins = req.headers.origin
 
+         const ua = req.headers['user-agent'] as string;
+         req.isWeixin = this.isWeixin(ua)
+         req.isApp = this.isApp(ua)
+         req.isPc = this.isPc(ua)
+
         const origin = (Array.isArray(origins) ? origins[0] : origins) || ''
 
         const allowedOrigins = [CROSS_DOMAIN.allowedOrigins]
@@ -54,5 +59,39 @@ export class CorsMiddleware implements NestMiddleware {
         } else {
             return next()
         }
+    }
+
+    /**
+     * 是否为微信
+     * @private
+     * @param {string} ua
+     * @return {*}  {boolean}
+     * @memberof TransformInterceptor
+     */
+     private isWeixin(ua: string): boolean {
+        return /micromessenger/i.test(ua);
+    }
+
+    /**
+     * 是否为app
+     * @private
+     * @param {string} ua
+     * @return {*}  {boolean}
+     * @memberof TransformInterceptor
+     */
+    private isApp(ua: string): boolean {
+        // 根据UA上的数据进行判断是否为内部APP
+        return false
+    }
+
+    /** 
+     * 是否为PC端
+     * @private
+     * @param {string} ua
+     * @return {*}  {boolean}
+     * @memberof TransformInterceptor
+     */
+    private isPc(ua: string): boolean {
+        return !/(Mobile|iPhone|Android|iPod|ios|iPad|Tablet|Windows Phone)/i.test(ua);
     }
 }

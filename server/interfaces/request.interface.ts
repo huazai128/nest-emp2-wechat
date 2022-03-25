@@ -13,6 +13,12 @@ declare global {
     namespace Express {
         interface Request {
             isLogin: boolean
+
+            isWeixin: boolean
+
+            isApp: boolean
+            
+            isPc: boolean
         }
        
         interface AuthenticatedRequest extends Request {

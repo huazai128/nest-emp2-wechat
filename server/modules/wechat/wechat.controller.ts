@@ -41,8 +41,7 @@ export class WechatController {
      * @memberof WechatController
      */
     @Get('auth')
-    async getAuth(@Req() req: Request,@QueryParams('query') query: AuthCode,@Res() res:Response) {
-        const {code, state} = query
+    async getAuth(@Req() req: Request,@QueryParams('query') { code }: AuthCode,@Res() res:Response) {
         if(code) {
             const data =  await this.wechatService.getSnsAccessToken(code)
             const temp = JSON.parse(data.toString());

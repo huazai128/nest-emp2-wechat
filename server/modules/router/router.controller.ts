@@ -16,7 +16,6 @@ export class RouterController {
     @Get('login')
     @Render('index')
     login(@QueryParams('request', new SessionPipe()) req: Request) {
-        
         if (req.isLogin) {
             // 重定向
             return { redirectUrl: '/' }

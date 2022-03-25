@@ -29,7 +29,7 @@ export class WechatMiddleware implements NestMiddleware {
         const isApi = url.includes('/api/') 
         const user = req.session.user as User
         const code = req.query.code as string;  
-        if(!isApi && !user?.userId && !RouterWhiteList.includes(url)) {
+        if(!isApi && !user?.userId && !RouterWhiteList.includes(url) && !isDevEnv && req.isWeixin) {
             if(code) {
                const data =  await this.wechatService.getSnsAccessToken(code)
                const temp = JSON.parse(data.toString());
@@ -53,6 +53,7 @@ export class WechatMiddleware implements NestMiddleware {
                 return res.status(301).redirect(url)
             }
         } else {
+            // 更新token 日期
             req.session.touch();
         }
         return next()
