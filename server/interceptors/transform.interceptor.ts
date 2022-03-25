@@ -10,7 +10,6 @@ import { Response, Request } from 'express'
 import { HttpResponseSuccess, ResponseStatus } from '@app/interfaces/response.interface';
 import { getResponsorOptions } from '@app/decorators/responsor.decorator';
 import { WechatService } from '@app/modules/wechat/wechat.service';
-import { JsConfig } from '@app/interfaces/wechat.interface';
 
 /**
  * 拦截
@@ -32,7 +31,6 @@ export class TransformInterceptor<T>
         const req = context.switchToHttp().getResponse<Request>()
         const target = context.getHandler()
         const { isApi } = getResponsorOptions(target)
-        
         if (!isApi) {
             res.contentType('html')
         }

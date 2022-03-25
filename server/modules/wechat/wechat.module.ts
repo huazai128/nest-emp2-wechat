@@ -1,10 +1,12 @@
 import { Module, OnModuleInit } from "@nestjs/common";
 import { WechatController } from "./wechat.controller";
 import { WechatService } from "./wechat.service";
-import { WeChat,ApiConfigKit, AccessToken, HttpKit, ApiConfig } from 'tnwx'
+import { ApiConfigKit, ApiConfig } from 'tnwx'
 import { config } from "@app/config";
+import { AuthModule } from "../auth/auth.module";
 
 @Module({
+    imports: [AuthModule],
     controllers: [WechatController],
     providers: [WechatService],
     exports: [WechatService]

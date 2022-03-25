@@ -21,7 +21,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const request = ctx.getRequest<Request>();
         const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
         let isApi = request.url.includes('/api/') 
-        const referer = request.get('referer') as string
          
         let errorResponse: ExceptionInfo = exception.getResponse?.() as ExceptionInfo
         errorResponse = get(errorResponse, 'response') || errorResponse;
@@ -30,13 +29,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const resultStatus = get(errorResponse, 'status') || status
         isApi = !!get(errorResponse, 'isApi')
 
-        let pageUrl: string;
-        if(isApi){//这里的判断有必要，只有是api时，才拿referer。
-            pageUrl = referer;
-        }else{
-            pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);
-        }
-        
         const data: HttpResponseError = {
             status: resultStatus,
             message: errorMessage,
@@ -51,8 +43,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
         }
         
         const isUnAuth = UnAuthStatus.includes(resultStatus)
-
-        if (isUnAuth && !request.url.includes('login')) {
+        if (isUnAuth && !isApi) {
+            const pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);
             request.session.destroy(() => {
                 logger.info('session已清除')
             });
