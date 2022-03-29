@@ -59,4 +59,6 @@ export class AuthService  {
         const res = await this.axiosService.get(url, { params: { id: id } })
         return res
     }
+
+    public async 
 }
