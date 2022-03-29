@@ -10,7 +10,7 @@ import logger from "@app/utils/logger";
  * @implements {NestMiddleware}
  */
 @Injectable()
-export class AppMiddleware implements NestMiddleware {
+export class DevMiddleware implements NestMiddleware {
     use(request: Request, response: Response, next: NextFunction) {
         if(isDevEnv) {
             logger.info('来源为本地开发')

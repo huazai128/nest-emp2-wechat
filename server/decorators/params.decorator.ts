@@ -53,8 +53,8 @@ export const QueryParams = createParamDecorator((field: keyof QueryParamsResult,
     const user: UserInfo = (request.session as any).user || {}
 
     const result = {
-        params: (!!pUlr && { transformUrl: pUlr, transferData: { ...otherParams, userId: user.userId } }) || request.query,
-        query: (!!qUlr && { transformUrl: qUlr, transferData: { ...otherQuery, userId: user.userId } }) || request.params,
+        params: (!!pUlr && { transformUrl: pUlr, transferData: { ...otherParams, userId: user.userId } }) || request.params,
+        query: (!!qUlr && { transformUrl: qUlr, transferData: { ...otherQuery, userId: user.userId } }) || request.query,
         cookies: request.cookies,
         isAuthenticated: isAuthenticated,
         visitor,

@@ -16,6 +16,8 @@ import { AxiosModule } from '@app/processors/axios/axios.module';
 import { CorsMiddleware } from '@app/middlewares/core.middleware';
 import { OriginMiddleware } from '@app/middlewares/origin.middleware';
 import { WechatMiddleware } from '@app/middlewares/wechat.middleware';
+import { AppMiddleware } from '@app/middlewares/app.middleware';
+import { DevMiddleware } from '@app/middlewares/dev.middleware';
 
 // API 
 import { ApiModule } from '@app/modules/api/api.module';
@@ -26,6 +28,7 @@ import { WechatModule } from '@app/modules/wechat/wechat.module';
 
 // Router 
 import { RouterModule } from '@app/modules/router/router.module';
+
 
 
 @Module({
@@ -49,13 +52,15 @@ export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(
-                CorsMiddleware,
+                CorsMiddleware, // 顺序不能乱
                 OriginMiddleware,
                 session({
                     store: new (RedisStore(session))({ client: this.redis }),
                     ...SESSION
                 }),
                 WechatMiddleware,
+                AppMiddleware,
+                DevMiddleware
             )
             .forRoutes('*');
     }

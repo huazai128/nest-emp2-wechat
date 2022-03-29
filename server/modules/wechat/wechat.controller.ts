@@ -10,6 +10,10 @@ interface AuthCode {
     state: ScopeEnum
 }
 
+interface RedirectQuery {
+    redirectUrl: string
+}
+
 @Controller('wx')
 export class WechatController {
     constructor(
@@ -27,8 +31,8 @@ export class WechatController {
      * @memberof WechatController
      */
     @Get('toAuth')
-    geToAuth(@QueryParams('query') query: any,@Res() res:Response) {
-        const url = this.wechatService.getAuthorizeUrl(query.redirectUrl,ScopeEnum.SNSAPI_USERINFO, '12121');
+    geToAuth(@QueryParams('query') query: RedirectQuery,@Res() res:Response) {
+        const url = this.wechatService.getAuthorizeUrl(query.redirectUrl,ScopeEnum.SNSAPI_USERINFO, '123');
         return res.status(301).redirect(url)
     }
     

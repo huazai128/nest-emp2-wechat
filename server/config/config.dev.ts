@@ -1,5 +1,5 @@
 import { ConfigServer } from '@app/interfaces/config.interface'
-import { redisConf } from '../dev.config'
+import { redisConf, wxConfig } from '../dev.config'
 
 const config: ConfigServer = {
 
@@ -21,8 +21,8 @@ const config: ConfigServer = {
 
     /* 微信相关配置 */
     wxConfig:  {
-        appId: 'wx614c453e0d1dcd12',
-        appScrect: '19a02e4927d346484fc70327970457f9',
+        appId: wxConfig.appId,
+        appScrect: wxConfig.appScrect,
         token: 'mima-wx',
         encryptMessage: true,
         encodingAesKey: 'encodingAesKey',

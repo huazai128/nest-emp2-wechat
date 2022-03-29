@@ -38,7 +38,7 @@ export class TransformInterceptor<T>
         return next.handle()
             .pipe(
                 map(async(data: any) => {
-                    if(!isApi) {
+                    if(!isApi && req.originalUrl) {
                         const url =('https' + '://' + req.get('Host') + req.originalUrl);
                         data.jsConfig = await this.wechatService.getSdk(url);
                     }
