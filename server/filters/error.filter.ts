@@ -27,8 +27,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const errorMessage = get(errorResponse, 'message') || errorResponse
         const errorInfo = get(errorResponse, 'error')  || null
         const resultStatus = get(errorResponse, 'status') || status
-        isApi = !!get(errorResponse, 'isApi')
-
+        
+        if(!isApi) {
+            isApi = !!get(errorResponse, 'isApi')
+        }
+        
         const data: HttpResponseError = {
             status: resultStatus,
             message: errorMessage,
@@ -43,7 +46,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         }
         const isUnAuth = UnAuthStatus.includes(resultStatus)
         
-        logger.error(`错误拦截error:${JSON.stringify(data) }`)
+        // logger.error(`错误拦截error:${JSON.stringify(data) }`)
 
         if (isUnAuth && !isApi) {
             const pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);

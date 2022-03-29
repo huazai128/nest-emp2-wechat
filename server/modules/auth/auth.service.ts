@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { HttpRequest } from "@app/interfaces/request.interface";
+import { HttpRequest, User } from "@app/interfaces/request.interface";
 import { AxiosService } from "@app/processors/axios/axios.service";
 import { AUTH, config } from "@app/config";
 import { JwtService } from '@nestjs/jwt'
@@ -29,9 +29,9 @@ export class AuthService  {
      * @return {*} 
      * @memberof AuthService
      */
-    public async validateUser({ id, username }: any) {
+    public async validateUser({ userId }: User) {
         // 获取用户
-        const user = await this.findById(id);
+        const user = await this.findById(userId);
         return user
     }
 

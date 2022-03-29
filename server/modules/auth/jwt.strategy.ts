@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-jwt'
 import { AuthService } from "./auth.service";
 import { Request } from 'express'
+import { HttpUnauthorizedError } from "@app/errors/unauthorized.error";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,6 +19,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: any) {
         const res = await this.authService.validateUser(payload);
-        return res
+        if (res) {
+          return res
+        } else {
+          throw new HttpUnauthorizedError()
+        }
     }
 }

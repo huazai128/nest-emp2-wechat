@@ -3,6 +3,7 @@ import { LoggedInGuard } from "./logged-in.guard";
 import { HttpUnauthorizedError } from "@app/errors/unauthorized.error";
 import { Request } from 'express'
 import { RouterWhiteList } from "@app/constants/router.constant";
+import { isDevEnv } from "@app/app.env";
 @Injectable()
 export class RouterGuard extends LoggedInGuard {
     private routeUrl: string

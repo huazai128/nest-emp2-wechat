@@ -41,6 +41,7 @@ export class WechatMiddleware implements NestMiddleware {
                     const newDate: any = this.authService.login({ transformUrl: '', transferData: result})
                     res.cookie('jwt', newDate.access_token);
                     res.cookie('userId',newDate.userId);
+                    req.cookies['jwt'] = newDate.access_token
                     req.session.user = newDate;
                 } else {
                     throw new CustomError({ message: 'scope不一致' }, HttpStatus.BAD_GATEWAY)

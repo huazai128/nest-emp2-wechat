@@ -18,7 +18,6 @@ const config: ConfigServer = {
         'password': redisConf.password,
     },
 
-
     /* 微信相关配置 */
     wxConfig:  {
         appId: wxConfig.appId,
