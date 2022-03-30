@@ -11,5 +11,5 @@ declare interface IStore {
     authStore: IAuthStore.AuthStore
 }
 
-declare const wxLogin: any
+declare const WxLogin: any
 

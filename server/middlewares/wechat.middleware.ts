@@ -41,6 +41,7 @@ export class WechatMiddleware implements NestMiddleware {
                     const newDate: any = this.authService.login({ transformUrl: '', transferData: result})
                     res.cookie('jwt', newDate.access_token);
                     res.cookie('userId',newDate.userId);
+                    // 强制写入cookie
                     req.cookies['jwt'] = newDate.access_token
                     req.session.user = newDate;
                 } else {

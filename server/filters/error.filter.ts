@@ -20,7 +20,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
         const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
-        let isApi = request.url.includes('/api/') 
+        let isApi = request.url.includes('/api/') || request.url.includes('/wx/') 
          
         let errorResponse: ExceptionInfo = exception.getResponse?.() as ExceptionInfo
         errorResponse = get(errorResponse, 'response') || errorResponse;

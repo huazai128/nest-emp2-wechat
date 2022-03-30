@@ -10,3 +10,5 @@ export enum Lang {
     ZH_TW = "zh_TW",
     EN = "en"
 }
+
+export const  WX_STATE = "wxLogin"

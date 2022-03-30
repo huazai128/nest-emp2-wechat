@@ -10,6 +10,7 @@ import { Response, Request } from 'express'
 import { HttpResponseSuccess, ResponseStatus } from '@app/interfaces/response.interface';
 import { getResponsorOptions } from '@app/decorators/responsor.decorator';
 import { WechatService } from '@app/modules/wechat/wechat.service';
+import { wxConfig } from '@app/dev.config';
 
 /**
  * 拦截
@@ -28,7 +29,7 @@ export class TransformInterceptor<T>
     }
     intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T | HttpResponseSuccess<T>> | any {
         const res = context.switchToHttp().getResponse<Response>()
-        const req = context.switchToHttp().getResponse<Request>()
+        const req = context.switchToHttp().getRequest<Request>()
         const target = context.getHandler()
         const { isApi } = getResponsorOptions(target)
        
@@ -38,9 +39,16 @@ export class TransformInterceptor<T>
         return next.handle()
             .pipe(
                 map(async(data: any) => {
-                    if(!isApi && req.originalUrl) {
-                        const url =('https' + '://' + req.get('Host') + req.originalUrl);
-                        data.jsConfig = await this.wechatService.getSdk(url);
+                    if(!isApi) {
+                        if(req.isWeixin) {
+                            const url =('https' + '://' + req.get('Host') + req.originalUrl);
+                            data.jsConfig = await this.wechatService.getSdk(url);
+                        }
+                        if(req.isPc) {
+                            data.wxConfig = {
+                                appId: wxConfig.appId,
+                            }
+                        }
                     }
                     if (data.redirectUrl) return res.status(301).redirect(data.redirectUrl)
                     const result = isApi ? {

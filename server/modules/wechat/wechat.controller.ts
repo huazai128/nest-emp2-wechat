@@ -1,5 +1,6 @@
-import { Lang, ScopeEnum } from "@app/constants/text.constant";
+import { Lang, ScopeEnum, WX_STATE } from "@app/constants/text.constant";
 import { QueryParams } from "@app/decorators/params.decorator";
+import { Responsor } from "@app/decorators/responsor.decorator";
 import { Controller, Get, Res, Req } from "@nestjs/common";
 import { Response, Request } from "express";
 import { AuthService } from "../auth/auth.service";
@@ -31,8 +32,9 @@ export class WechatController {
      * @memberof WechatController
      */
     @Get('toAuth')
+    @Responsor.api()
     geToAuth(@QueryParams('query') query: RedirectQuery,@Res() res:Response) {
-        const url = this.wechatService.getAuthorizeUrl(query.redirectUrl,ScopeEnum.SNSAPI_USERINFO, '123');
+        const url = this.wechatService.getAuthorizeUrl(query.redirectUrl,ScopeEnum.SNSAPI_USERINFO, WX_STATE);
         return res.status(301).redirect(url)
     }
     
@@ -44,6 +46,7 @@ export class WechatController {
      * @memberof WechatController
      */
     @Get('auth')
+    @Responsor.api()
     async getAuth(@Req() req: Request,@QueryParams('query') { code }: AuthCode,@Res() res:Response) {
         if(code) {
             const data =  await this.wechatService.getSnsAccessToken(code)
