@@ -1,4 +1,4 @@
-import { Controller, Get, Header,  Render, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Header, Render, Req, UseGuards } from '@nestjs/common';
 import { RouterGuard } from '@app/guards/router.guard';
 import { Request } from 'express'
 import { SessionPipe } from '@app/pipes/session.pipe';

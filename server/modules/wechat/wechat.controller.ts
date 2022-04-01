@@ -33,11 +33,16 @@ export class WechatController {
      */
     @Get('toAuth')
     @Responsor.api()
-    geToAuth(@QueryParams('query') query: RedirectQuery,@Res() res:Response) {
-        const url = this.wechatService.getAuthorizeUrl(query.redirectUrl,ScopeEnum.SNSAPI_USERINFO, WX_STATE);
-        return res.status(301).redirect(url)
+    geToAuth(@QueryParams('query') query: RedirectQuery, @Res() res: Response) {
+        if (query.redirectUrl) {
+            const url = this.wechatService.getAuthorizeUrl(query.redirectUrl, ScopeEnum.SNSAPI_USERINFO, WX_STATE);
+            return res.status(301).redirect(url)
+        } else {
+            throw '参数不合法'
+        }
+
     }
-    
+
     /**
      * PC端微信扫码授权登录
      * @param {*} query
@@ -47,9 +52,9 @@ export class WechatController {
      */
     @Get('auth')
     @Responsor.api()
-    async getAuth(@Req() req: Request,@QueryParams('query') { code }: AuthCode,@Res() res:Response) {
-        if(code) {
-            const data =  await this.wechatService.getSnsAccessToken(code)
+    async getAuth(@Req() req: Request, @QueryParams('query') { code }: AuthCode, @Res() res: Response) {
+        if (code) {
+            const data = await this.wechatService.getSnsAccessToken(code)
             const temp = JSON.parse(data.toString());
             if (temp.errcode) {
                 throw temp.errmsg
@@ -58,9 +63,9 @@ export class WechatController {
                 // 获取用户信息
                 const result = await this.wechatService.getUserInfo(temp.access_token, temp.openid, Lang.ZH_CN);
                 // 把数据保存到后端， 后端返回userId
-                const newDate: any = this.authService.login({ transformUrl: '', transferData: result})
+                const newDate: any = this.authService.login({ transformUrl: '', transferData: result })
                 res.cookie('jwt', newDate.access_token);
-                res.cookie('userId',newDate.userId);
+                res.cookie('userId', newDate.userId);
                 req.session.user = newDate;
                 return res.status(200).jsonp(newDate)
             } else {
@@ -78,8 +83,8 @@ export class WechatController {
      * @memberof WechatController
      */
     @Get('jssdk')
-    async getJsSdk (@Req() req: Request) {
-        const url =  req.get('referer') as string
+    async getJsSdk(@Req() req: Request) {
+        const url = req.get('referer') as string
         return await this.wechatService.getSdk(url);
     }
 }

@@ -1,11 +1,11 @@
 import { Lang, ScopeEnum } from "@app/constants/text.constant";
 import { JsConfig } from "@app/interfaces/wechat.interface";
 import { Injectable } from "@nestjs/common";
-import {ApiConfigKit,HttpKit, WeChat } from 'tnwx'
+import { ApiConfigKit, HttpKit, WeChat } from 'tnwx'
 import util from 'util'
 
 @Injectable()
-export class WechatService{
+export class WechatService {
     private authorizeUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s";
     private accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code"
     private refreshTokenUrl = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s"
@@ -30,7 +30,7 @@ export class WechatService{
      * 通过code换取网页授权access_token
      * @param code 
      */
-    public  async getSnsAccessToken(code: string) {
+    public async getSnsAccessToken(code: string) {
         const url = util.format(this.accessTokenUrl, ApiConfigKit.getApiConfig.getAppId,
             ApiConfigKit.getApiConfig.getAppScrect, code);
         return HttpKit.getHttpDelegate.httpGet(url);
@@ -50,7 +50,7 @@ export class WechatService{
      * @param accessToken 通过code换取的access_token
      * @param openId 
      */
-     public async checkAccessToken(accessToken: string, openId: string) {
+    public async checkAccessToken(accessToken: string, openId: string) {
         const url = util.format(this.checkTokenUrl, accessToken, openId);
         return HttpKit.getHttpDelegate.httpGet(url);
     }
@@ -72,7 +72,7 @@ export class WechatService{
      * @return {*}  {Promise<JsConfig>}
      * @memberof WechatService
      */
-    public async getSdk(url:string): Promise<JsConfig> {
+    public async getSdk(url: string): Promise<JsConfig> {
         const appId = ApiConfigKit.getApiConfig.getAppId
         const timestamp = this.createTimestamp()
         const nonceStr = this.createNonceStr()
@@ -83,7 +83,7 @@ export class WechatService{
             nonceStr,
             signature,
         }
-    }  
+    }
 
     /**
      * 生成随机字符串
@@ -101,7 +101,7 @@ export class WechatService{
      * @returns {string} 
      * @memberof JsSdkFile
      */
-    private  createTimestamp(): string {
+    private createTimestamp(): string {
         return Math.floor(Date.now() / 1000).toString()
     }
 }

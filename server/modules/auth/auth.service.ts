@@ -5,7 +5,7 @@ import { AUTH, config } from "@app/config";
 import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
-export class AuthService  {
+export class AuthService {
 
     constructor(private readonly axiosService: AxiosService, private readonly jwtService: JwtService) { }
 
@@ -60,5 +60,5 @@ export class AuthService  {
         return res
     }
 
-    public async 
+    public async
 }

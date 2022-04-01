@@ -9,7 +9,7 @@ type AccessTokenResult = AccessToken | undefined
 
 @Injectable()
 export class AccessTokenService {
-    private url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${ config.wxConfig.appId }&secret=${config.wxConfig.appScrect}`
+    private url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.wxConfig.appId}&secret=${config.wxConfig.appScrect}`
     private accessTokenCache: CacheIntervalResult<AccessTokenResult>
     constructor(
         private readonly cahcheService: RedisServer
@@ -19,8 +19,8 @@ export class AccessTokenService {
             promise: this.refreshAccessToken,
             timeout: {
                 success: 1000 * 60 * 60 * 2, // 成功后 2 个小时更新一次数据
-                error: 5000 , // 失败后 5 秒更新一次数据
-              },
+                error: 5000, // 失败后 5 秒更新一次数据
+            },
         })
     }
 
@@ -29,8 +29,8 @@ export class AccessTokenService {
      * @memberof AccessTokenService
      */
     public async getAccessToken() {
-        const asseccToken: AccessTokenResult= await this.getAvailableAccessToken();
-        if(asseccToken) {
+        const asseccToken: AccessTokenResult = await this.getAvailableAccessToken();
+        if (asseccToken) {
             logger.info(`缓存中获取 asseccToken`)
             return asseccToken
         }
@@ -44,7 +44,7 @@ export class AccessTokenService {
      * @memberof AccessTokenService
      */
     public async getAvailableAccessToken(): Promise<AccessTokenResult> {
-        let result:AccessTokenResult 
+        let result: AccessTokenResult
         const accessTokenJson = await this.accessTokenCache();
         if (accessTokenJson) {
             result = accessTokenJson;
@@ -63,7 +63,7 @@ export class AccessTokenService {
      */
     public async refreshAccessToken(): Promise<any> {
         const data = await HttpKit.getHttpDelegate.httpGet(this.url)
-            if(data) {
+        if (data) {
             const accessToken: AccessToken = new AccessToken(data)
             return accessToken
         } else {

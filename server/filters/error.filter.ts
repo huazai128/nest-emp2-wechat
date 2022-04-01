@@ -47,8 +47,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         }
         const isUnAuth = UnAuthStatus.includes(resultStatus)
 
-        // logger.error(`错误拦截error:${JSON.stringify(data) }`)
-
+        logger.error(`错误拦截error:${JSON.stringify(data)}`)
 
         if (isUnAuth && !isApi) {
             const pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);

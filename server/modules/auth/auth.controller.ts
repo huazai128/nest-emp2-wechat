@@ -1,4 +1,4 @@
-import {  Controller, Get, Param,Post, Body, Req, Res} from "@nestjs/common";
+import { Controller, Get, Param, Post, Body, Req, Res } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Responsor } from "@app/decorators/responsor.decorator";
 import { TransformPipe } from "@app/pipes/transform.pipe";
@@ -23,7 +23,7 @@ export class AuthController {
     public async adminLogin(@Req() req: Request, @Body(new TransformPipe()) data: HttpRequest, @Res() res: Response) {
         const { access_token, token, ...result } = await this.authService.login(data)
         res.cookie('jwt', access_token);
-        res.cookie('userId',result.userId);
+        res.cookie('userId', result.userId);
         req.session.user = result;
         return res.status(200).send({
             result: result,
@@ -31,7 +31,7 @@ export class AuthController {
             message: '登录成功',
         })
     }
-    
+
     /**
      * 根据ID获取用户信息
      * @param {string} id

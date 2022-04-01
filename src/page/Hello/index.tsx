@@ -1,4 +1,4 @@
-import {useEffect } from 'react'
+import { useEffect } from 'react'
 import { WechatLogin } from '@src/utils/wxConfig'
 import useRootStore from '@src/stores/useRootStore'
 import config from '@src/config'
@@ -12,7 +12,7 @@ const Hello = () => {
         const url = `${config.apiHost}/wx/auth?redirect_uri=${encodeURIComponent(location.href)}`
         WechatLogin.initLogin(appId, 'wxLogin-qr', url)
     }, [])
-    
+
     return (
         <div className="App flex-col flex-center">
             <h1>欢迎来到nest+emp2</h1>

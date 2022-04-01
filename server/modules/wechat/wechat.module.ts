@@ -11,9 +11,9 @@ import { AuthModule } from "../auth/auth.module";
     providers: [WechatService],
     exports: [WechatService]
 })
-export class WechatModule implements OnModuleInit{
+export class WechatModule implements OnModuleInit {
     onModuleInit() {
-        const devApiConfig = new ApiConfig(config.wxConfig.appId, config.wxConfig.appScrect,config.wxConfig.token);
+        const devApiConfig = new ApiConfig(config.wxConfig.appId, config.wxConfig.appScrect, config.wxConfig.token);
         // 微信公众号、微信小程序、微信小游戏 支持多应用
         ApiConfigKit.putApiConfig(devApiConfig);
         // 开启开发模式,方便调试
