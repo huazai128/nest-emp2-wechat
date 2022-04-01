@@ -20,7 +20,7 @@ module.exports = defineConfig(({mode}) => {
       devMiddleware: { // 这里是开启 本地访问不了
         index: true,
         mimeTypes: { phtml: 'text/html' },
-        publicPath: './dist/views',
+        publicPath: './dist/client',
         serverSideRender: true,
         writeToDisk: true,
       },

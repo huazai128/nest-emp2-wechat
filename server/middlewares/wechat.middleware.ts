@@ -19,9 +19,8 @@ export class WechatMiddleware implements NestMiddleware {
     constructor(
         private readonly wechatService: WechatService,
         private readonly authService: AuthService
-    ) {
+    ) { }
 
-    }
     async use(req: Request, res: Response, next: NextFunction) {
         const url = req.originalUrl as string
         const isApi = url.includes('/api/')

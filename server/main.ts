@@ -27,8 +27,6 @@ async function bootstrap() {
 
     app.useStaticAssets(resolve(__dirname, '../../dist/client'))
 
-    // 这里是单页应用
-    // app.setBaseViewsDir(join(__dirname, '../..', 'views'));
     app.setBaseViewsDir(join(__dirname, '../../dist/views'));
     app.setViewEngine('html');
     app.engine('html', ejs.renderFile);
@@ -42,7 +40,7 @@ async function bootstrap() {
     morgan.token('userId', (req: Request) => {
         return get(req, 'cookies.userId') || get(req, 'session.user.userId') || ''
     })
-    
+
     app.use(morgan(':remote-addr - [:userId] - :remote-user ":method :url HTTP/:http-version" ":referrer" ":user-agent" :status :res[content-length] - :response-time ms'))
 
     app.useGlobalFilters(new HttpExceptionFilter())
