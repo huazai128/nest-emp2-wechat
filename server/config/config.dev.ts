@@ -19,7 +19,7 @@ const config: ConfigServer = {
     },
 
     /* 微信相关配置 */
-    wxConfig:  {
+    wxConfig: {
         appId: wxConfig.appId,
         appScrect: wxConfig.appScrect,
         token: 'mima-wx',

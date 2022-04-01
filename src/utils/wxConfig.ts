@@ -5,7 +5,7 @@
  */
 export class WechatLogin {
     public static initLogin(appID: string, id: string, url: string){
-        const obj = new WxLogin({
+        new WxLogin({
             self_redirect:true,
             id: id, 
             appid: appID, 

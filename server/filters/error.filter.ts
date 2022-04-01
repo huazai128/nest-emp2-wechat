@@ -20,18 +20,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
         const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
-        let isApi = request.url.includes('/api/') || request.url.includes('/wx/') 
-         
+        const url = request.url
+        let isApi = url.includes('/api/') || url.includes('/wx/');
+
         let errorResponse: ExceptionInfo = exception.getResponse?.() as ExceptionInfo
         errorResponse = get(errorResponse, 'response') || errorResponse;
         const errorMessage = get(errorResponse, 'message') || errorResponse
-        const errorInfo = get(errorResponse, 'error')  || null
+        const errorInfo = get(errorResponse, 'error') || null
         const resultStatus = get(errorResponse, 'status') || status
-        
-        if(!isApi) {
+
+        if (!isApi) {
             isApi = !!get(errorResponse, 'isApi')
         }
-        
+
         const data: HttpResponseError = {
             status: resultStatus,
             message: errorMessage,
@@ -45,8 +46,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
             data.message = data.message || `Invalid API: ${request.method} > ${request.url}`
         }
         const isUnAuth = UnAuthStatus.includes(resultStatus)
-        
+
         // logger.error(`错误拦截error:${JSON.stringify(data) }`)
+
 
         if (isUnAuth && !isApi) {
             const pageUrl = ('https' + '://' + request.get('Host') + request.originalUrl);
@@ -54,7 +56,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 logger.info('session已清除')
             });
             response.clearCookie('jwt');
-            return response.redirect(`/wx/toAuth?redirectUrl=${ pageUrl }`)
+            return response.redirect(`/wx/toAuth?redirectUrl=${pageUrl}`)
         } else {
             return isApi ? response.status(status).json(data) : response.redirect('error')
         }

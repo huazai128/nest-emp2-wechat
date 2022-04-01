@@ -83,7 +83,6 @@ function httpCommon<T>(method: Method, { data, otherConfig, apiUrl, ...otherData
         .request(axiosConfig)
         .then(res => res)
         .catch(err => {
-            console.log(err, '21212')
             return Promise.reject(err.msg || err.stack)
         })
 }

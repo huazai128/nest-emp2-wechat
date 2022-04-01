@@ -1,22 +1,23 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.detectIndentation": false,
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.enabled": false,
-  "cSpell.words": [
-    "AKISMET",
-    "aliyun",
-    "appleboy",
-    "middlewares",
-    "nestjs",
-    "nodepress",
-    "prebuild",
-    "surmon",
-    "typegoose"]
-}
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+    },
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.enabled": false,
+    "cSpell.words": [
+      "AKISMET",
+      "aliyun",
+      "appleboy",
+      "middlewares",
+      "nestjs",
+      "nodepress",
+      "prebuild",
+      "surmon",
+      "typegoose"]
+  }
+  
