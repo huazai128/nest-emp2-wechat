@@ -13,7 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    "@efox/eslint-config-react-prittier-ts"
+    // "@efox/eslint-config-react-prittier-ts"
   ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
