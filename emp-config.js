@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { join, resolve } = require('path')
 
 module.exports = defineConfig(({mode}) => {
-  // const target = 'es2018'
   const target = 'es5'
   const isESM = !['es3', 'es5'].includes(target)
   return {

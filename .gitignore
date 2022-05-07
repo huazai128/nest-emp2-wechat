@@ -4,6 +4,7 @@
 /server/dev.config.ts
 /yarn.lock
 
+
 # Logs
 logs
 *.log
