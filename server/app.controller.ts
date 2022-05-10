@@ -17,7 +17,6 @@ export class AppController {
     @Get("image-proxy")
     imageProxy(@Req() req: Request, @Res() res: Response) {
         const url: string = get(req, 'query.url');
-        console.log(!url || !/^https?:\/\//.test(url), '======')
         if (!url || !/^https?:\/\//.test(url)) {
             return res.status(500).send({
                 status: 500,
