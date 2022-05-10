@@ -8,7 +8,7 @@ const config: ConfigServer = {
 
     // 代理接口域名
     apiPrefix: {
-        baseApi: 'http://172.25.197.154:3000',
+        baseApi: 'http://172.25.230.139:3000',
     },
 
     redisConf: {
