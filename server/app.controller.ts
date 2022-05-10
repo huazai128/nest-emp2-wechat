@@ -2,16 +2,18 @@ import { Controller, Get, Query, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express'
 import { get } from "lodash";
 import request from 'request';
+import { Responsor } from './decorators/responsor.decorator';
 
 /**
  * 工具类接口
  * @export
  * @class AppController
  */
-@Controller('api')
+@Controller('config')
 export class AppController {
 
-    // 图片跨域
+    // 图片跨域问题
+    @Responsor.api()
     @Get("image-proxy")
     imageProxy(@Req() req: Request, @Res() res: Response) {
         const url: string = get(req, 'query.url');
@@ -25,6 +27,7 @@ export class AppController {
         const stream: any = request({ url });
         req.pipe(stream)
         stream.on('error', err => {
+            console.log(err, '====')
             return res.status(500).send({
                 status: 500,
                 message: err.message,
