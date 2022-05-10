@@ -57,7 +57,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             response.clearCookie('jwt');
             return response.redirect(`/wx/toAuth?redirectUrl=${pageUrl}`)
         } else {
-            return isApi ? response.status(status).json(data) : response.redirect('error')
+            return isApi ? response.status(status).json(data) : response.redirect('/error')
         }
     }
 }
