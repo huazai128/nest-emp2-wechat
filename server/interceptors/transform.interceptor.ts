@@ -32,22 +32,28 @@ export class TransformInterceptor<T>
         const req = context.switchToHttp().getRequest<Request>()
         const target = context.getHandler()
         const { isApi } = getResponsorOptions(target)
-       
+
         if (!isApi) {
             res.contentType('html')
         }
         return next.handle()
             .pipe(
-                map(async(data: any) => {
-                    if(!isApi) {
-                        if(req.isWeixin) {
-                            const url =('https' + '://' + req.get('Host') + req.originalUrl);
+                map(async (data: any) => {
+                    if (!isApi) {
+                        if (req.isWeixin) {
+                            const url = ('https' + '://' + req.get('Host') + req.originalUrl);
                             data.jsConfig = await this.wechatService.getSdk(url);
                         }
-                        if(req.isPc) {
+                        if (req.isPc) {
                             data.wxConfig = {
                                 appId: wxConfig.appId,
                             }
+                        }
+                        data = {
+                            ...data,
+                            isApp: req.isApp,
+                            isPc: req.isPc,
+                            isWeixin: req.isWeixin,
                         }
                     }
                     if (data.redirectUrl) return res.status(301).redirect(data.redirectUrl)
@@ -61,5 +67,5 @@ export class TransformInterceptor<T>
             );
     }
 
-    
+
 }

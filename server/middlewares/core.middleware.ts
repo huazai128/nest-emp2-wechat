@@ -4,16 +4,22 @@ import { Injectable, NestMiddleware, HttpStatus, RequestMethod } from '@nestjs/c
 import { isDevEnv } from '@app/app.env'
 import { CROSS_DOMAIN } from '@app/config'
 
+/**
+ * CORS
+ * @export
+ * @class CorsMiddleware
+ * @implements {NestMiddleware}
+ */
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
     use(req: Request, response: Response, next: NextFunction) {
         const getMethod = (method) => RequestMethod[method]
         const origins = req.headers.origin
 
-         const ua = req.headers['user-agent'] as string;
-         req.isWeixin = this.isWeixin(ua)
-         req.isApp = this.isApp(ua)
-         req.isPc = this.isPc(ua)
+        const ua = req.headers['user-agent'] as string;
+        req.isWeixin = this.isWeixin(ua)
+        req.isApp = this.isApp(ua)
+        req.isPc = this.isPc(ua)
 
         const origin = (Array.isArray(origins) ? origins[0] : origins) || ''
 
@@ -68,7 +74,7 @@ export class CorsMiddleware implements NestMiddleware {
      * @return {*}  {boolean}
      * @memberof TransformInterceptor
      */
-     private isWeixin(ua: string): boolean {
+    private isWeixin(ua: string): boolean {
         return /micromessenger/i.test(ua);
     }
 
