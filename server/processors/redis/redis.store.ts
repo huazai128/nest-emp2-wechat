@@ -1,4 +1,4 @@
-import { createClient, ClientOpts, RedisClient} from 'redis'
+import { createClient, ClientOpts, RedisClient } from 'redis'
 import { CacheStoreFactory, CacheStoreSetOptions, CacheModuleOptions } from '@nestjs/common'
 
 export type RedisStoreOptions = ClientOpts
