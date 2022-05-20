@@ -26,7 +26,8 @@
         "stat": "emp build --analyze",
         "stop": "pm2 delete emp-wechat",
         "prod": "pm2 start pm2.config.js --no-daemon",
-        "merge": "yarn stop && yarn prod"
+        "merge": "yarn stop && yarn prod",
+        "dts": "emp dts"
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",

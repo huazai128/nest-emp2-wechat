@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { WechatLogin } from '@src/utils/wxConfig'
 import useRootStore from '@src/stores/useRootStore'
+import HostApp from '@microHost/App'
 import config from '@src/config'
 import './index.scss'
 
@@ -15,6 +16,7 @@ const Hello = () => {
 
     return (
         <div className="App flex-col flex-center">
+            <HostApp />
             <h1>欢迎来到nest+emp2</h1>
             <div id="wxLogin-qr">
 
