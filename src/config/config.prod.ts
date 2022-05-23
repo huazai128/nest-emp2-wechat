@@ -1,7 +1,7 @@
 import { ConfigParams } from "@src/interfaces/config"
 
 const config: ConfigParams = {
-    apiHost: 'http://172.25.197.154:3002',
+    apiHost: 'https://emp-wechat.zbisq.com',
     wxUdbLoginDomain: '',
 }
 

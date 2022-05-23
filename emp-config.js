@@ -6,6 +6,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { join, resolve } = require('path')
 
 module.exports = defineConfig(({ mode, env }) => {
+  process.env.EMP_ENV = env || 'dev'
+
   const target = 'es5'
   const isESM = !['es3', 'es5'].includes(target)
   const build = {
