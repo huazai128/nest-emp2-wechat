@@ -55,7 +55,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 logger.info('session已清除')
             });
             response.clearCookie('jwt');
-            return response.redirect(`/wx/toAuth?redirectUrl=${pageUrl}`)
+
+            return response.redirect(request.isPc ? '/login' : `/wx/toAuth?redirectUrl=${pageUrl}`)
         } else {
             return isApi ? response.status(status).json(data) : response.redirect('/error')
         }
