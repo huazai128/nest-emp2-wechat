@@ -13,8 +13,8 @@ export const APP = {
 }
 
 export const CROSS_DOMAIN = {
-    allowedOrigins: ['https://admin-test.markiapp.com', 'https://admin.markiapp.com', 'https://admin-release.markiapp.com'],
-    allowedReferer: 'markiapp.com',
+    allowedOrigins: ['https://emp-wechat.zbisq.com'],
+    allowedReferer: 'zbisq.com',
 }
 
 export const REDIS = {
