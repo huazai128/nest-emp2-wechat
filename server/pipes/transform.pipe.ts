@@ -1,6 +1,6 @@
 import { config } from '@app/config';
 import { HttpRequest } from '@app/interfaces/request.interface';
-import { PipeTransform, Injectable, ArgumentMetadata, BadRequestException } from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 
 /**
  * 拼接转发接口

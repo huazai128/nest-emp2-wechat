@@ -26,7 +26,6 @@ export class AppController {
         const stream: any = request({ url });
         req.pipe(stream)
         stream.on('error', err => {
-            console.log(err, '====')
             return res.status(500).send({
                 status: 500,
                 message: err.message,
