@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { WechatLogin } from '@src/utils/wxConfig'
 import useRootStore from '@src/stores/useRootStore'
 import HostApp from '@microHost/App'
+import { Button } from '@microHost/Button'
 import config from '@src/config'
 import './index.scss'
 
@@ -17,6 +18,7 @@ const Hello = () => {
     return (
         <div className="App flex-col flex-center">
             <HostApp />
+            <Button customLabel="新增的组件需要重新编译" />
             <h1>欢迎来到nest+emp2</h1>
             <div id="wxLogin-qr">
 
