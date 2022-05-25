@@ -13,9 +13,7 @@ module.exports = defineConfig(({ mode, env }) => {
   const build = {
     target,
     staticDir: 'static',
-  }
-  if (!!env) { 
-    build.outDir = join(__dirname, "./dist/client")
+    
   }
   return {
     build: build,
@@ -28,6 +26,9 @@ module.exports = defineConfig(({ mode, env }) => {
         serverSideRender: true,
         writeToDisk: true,
       },
+    },
+    dtsPath: {
+        '@microHost': 'http://172.25.230.139:8001/empShareTypes/index.d.ts ',
     },
     base: '/',
     resolve: {
