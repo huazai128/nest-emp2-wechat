@@ -6,14 +6,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { join, resolve } = require('path')
 
 module.exports = defineConfig(({ mode, env }) => {
+	console.log(env, 'env')
   process.env.EMP_ENV = env || 'dev'
-
   const target = 'es5'
   const isESM = !['es3', 'es5'].includes(target)
   const build = {
     target,
     staticDir: 'static',
-    
+    outDir: join(__dirname, "./dist/client"),
   }
   return {
     build: build,
@@ -28,7 +28,7 @@ module.exports = defineConfig(({ mode, env }) => {
       },
     },
     dtsPath: {
-        '@microHost': 'http://172.25.230.139:8001/empShareTypes/index.d.ts ',
+      '@microHost': 'http://172.25.230.139:8001/empShareTypes/index.d.ts',
     },
     base: '/',
     resolve: {
@@ -41,21 +41,24 @@ module.exports = defineConfig(({ mode, env }) => {
       filename: resolve('./dist/views/index.html'),
       title: '马克相机'
     },
-    webpackChain:  (chain, config) => {
-        chain.plugin('InlineCodePlugin').use(new InlineCodePlugin({
-            begin: false,
-            tag: 'script',
-            inject: 'body',
-            code: `window.INIT_DATA = <%- JSON.stringify(data) %>`
-        }))
-        chain.plugin('CopyWebpackPlugin').use(new CopyWebpackPlugin({ 
-            patterns: [
-                {
-                  from: resolve(__dirname, "./public"),  
-                  to: resolve(__dirname, "./dist/views"), 
-                }
-             ],
-        }))
+    webpackChain: (chain, config) => {
+			if (env !== 'dev') { 
+				chain.devtool('source-map') // 怎样分离map 文件防止上传到线上。用于日志上报时获取准确的信息
+			}
+			chain.plugin('InlineCodePlugin').use(new InlineCodePlugin({
+				begin: false,
+				tag: 'script',
+				inject: 'body',
+				code: `window.INIT_DATA = <%- JSON.stringify(data) %>`
+			}))
+			chain.plugin('CopyWebpackPlugin').use(new CopyWebpackPlugin({ 
+				patterns: [
+					{
+						from: resolve(__dirname, "./public"),  
+						to: resolve(__dirname, "./dist/views"), 
+					}
+				],
+			}))
     },
     empShare: {
       name: 'microApp',

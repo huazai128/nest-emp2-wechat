@@ -42,7 +42,7 @@ export class RouterController {
      * @memberof AppController
      */
     @UseGuards(RouterGuard)
-    @Get()
+    @Get("*")
     @Render('index')
     getTest(@Req() req: Request) {
         return { data: 12 }

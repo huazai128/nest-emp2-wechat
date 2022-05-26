@@ -8,6 +8,12 @@ import './index.scss'
 
 const Hello = () => {
     const { globalStore } = useRootStore()
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            console.log('监听到了', e.target)
+        })
+    }, [])
+
 
     useEffect(() => {
         const { appId } = globalStore.wxConfig
@@ -16,9 +22,11 @@ const Hello = () => {
     }, [])
 
     return (
-        <div className="App flex-col flex-center">
+        <div className="App flex-col flex-center" >
             <HostApp />
-            <Button customLabel="新增的组件需要重新编译" />
+            <Button customLabel="新增的组件需要重新编译" onClick={() => {
+                console.log('点击时间')
+            }} />
             <h1>欢迎来到nest+emp2</h1>
             <div id="wxLogin-qr">
 
