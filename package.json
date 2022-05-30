@@ -19,7 +19,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "dev": "emp dev -cl false --env test",
+        "dev": "emp dev -cl false --env dev",
         "emp:prod": "emp build --env prod",
         "emp:test": "emp build --env test",
         "build:ts": "emp build -t --env prod",
@@ -32,11 +32,13 @@
     },
     "dependencies": {
         "@ant-design/icons": "^4.7.0",
+        "@fastly/performance-observer-polyfill": "^2.0.0",
         "@nestjs/common": "^8.2.3",
         "@nestjs/core": "^8.2.3",
         "@nestjs/jwt": "^8.0.0",
         "@nestjs/passport": "^8.2.1",
         "@nestjs/platform-express": "^8.2.3",
+        "@types/js-cookie": "^3.0.2",
         "antd": "^4.19.2",
         "autoprefixer": "^10.4.7",
         "axios": "^0.21.4",
@@ -50,6 +52,7 @@
         "http-proxy-middleware": "^2.0.4",
         "intersection-observer": "^0.12.0",
         "js-base64": "^3.7.2",
+        "js-cookie": "^3.0.1",
         "jsonwebtoken": "^8.5.1",
         "mobx": "^6.3.7",
         "mobx-react": "^7.2.1",
@@ -68,7 +71,8 @@
         "request": "^2.88.2",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
-        "tnwx": "^2.5.6"
+        "tnwx": "^2.5.6",
+        "web-vitals": "^2.1.4"
     },
     "devDependencies": {
         "@efox/emp": "^2.2.3",

@@ -18,5 +18,8 @@ yarn build
 echo "step2: yarn emp:build"
 yarn emp:build
 
+echo "step3: yarn emp:build"
+find ./dist -name "*.map" | xargs rm -rf
+
 cp -rp ./dist ./output
 cd output

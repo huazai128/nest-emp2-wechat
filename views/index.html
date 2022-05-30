@@ -16,9 +16,7 @@
     <!-- EMP inject css -->
     <% for (let i in htmlWebpackPlugin.options.files.css) { %>
     <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.files.css[i] %>" /><% } %>
-    <!-- EMP inject js -->
-    <% for (let i in htmlWebpackPlugin.options.files.js) { %>
-    <script src="<%= htmlWebpackPlugin.options.files.js[i] %>"></script><% } %>
+    
 
     <script type="text/javascript">
         /**
@@ -152,6 +150,9 @@
   <div id="emp-root" >
     <div>loading</div>
   </div>
+  <!-- EMP inject js -->
+  <% for (let i in htmlWebpackPlugin.options.files.js) { %>
+    <script src="<%= htmlWebpackPlugin.options.files.js[i] %>"></script><% } %>
   <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 </body>
 </html>

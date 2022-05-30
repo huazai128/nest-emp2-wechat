@@ -6,7 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { join, resolve } = require('path')
 
 module.exports = defineConfig(({ mode, env }) => {
-	console.log(env, 'env')
   process.env.EMP_ENV = env || 'dev'
   const target = 'es5'
   const isESM = !['es3', 'es5'].includes(target)
@@ -43,7 +42,8 @@ module.exports = defineConfig(({ mode, env }) => {
     },
     webpackChain: (chain, config) => {
 			if (env !== 'dev') { 
-				chain.devtool('source-map') // 怎样分离map 文件防止上传到线上。用于日志上报时获取准确的信息
+                chain.devtool('source-map') // 怎样分离map文件，防止上传到线上。用于日志上报时获取准确错误信息.
+                // 上传至CDN时要过滤map文件，打包成功后也要移除map 文件
 			}
 			chain.plugin('InlineCodePlugin').use(new InlineCodePlugin({
 				begin: false,
