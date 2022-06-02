@@ -6,8 +6,8 @@ import 'intersection-observer'
 import 'mutationobserver-polyfill'
 import '@fastly/performance-observer-polyfill/polyfill'
 
-import Per from '@src/utils/monitor/webVitals'
-const performance = new Per()
+import Monitor from '@src/utils/monitor'
+const monitor = new Monitor()
 
 ReactDOM.render(
     <RootStoreProvider store={stores}>

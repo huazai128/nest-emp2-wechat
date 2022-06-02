@@ -1,10 +1,15 @@
 import { getFCP } from 'web-vitals';
 import { IMetrics } from "./interfaces"
-import { afterLoad, getFP, getNavigationTiming, getResourceFlow, supported } from './utils'
+import { afterLoad, getFP, getNavigationTiming, getResourceFlow, mOberver, supported } from './utils'
 import SendLog from './send';
 
-export default class Performance extends SendLog {
-    // 本地暂存数据在 Map 里 （也可以自己用对象来存储）
+/**
+ * 性能
+ * @export
+ * @class Performance
+ * @extends {SendLog}
+ */
+export default class WebVitals extends SendLog {
     private startTime: number
     private diffTime = 0
     constructor() {
@@ -53,21 +58,12 @@ export default class Performance extends SendLog {
             rootMargin: '0px',
             threshold: [0.1, 0.85]
         })
-        const mOb = new MutationObserver(function (mutationsList: MutationRecord[]) {
-            mutationsList.forEach(function (mutation: MutationRecord) {
-                const addedNodes = mutation.addedNodes
-                addedNodes.forEach((node: any) => {
-                    iOb.observe(node)
-                })
-            });
-        })
-        mOb.observe(document.body, {
-            attributes: true,
-            characterData: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-            characterDataOldValue: true,
+        const mO = mOberver(function (mutation: MutationRecord) {
+            const addedNodes = mutation.addedNodes
+            addedNodes.forEach((node: any) => {
+                iOb.observe(node)
+            })
+            mO.disconnect()
         })
     }
 
@@ -75,7 +71,6 @@ export default class Performance extends SendLog {
     initNavigationTiming = (): void => {
         const navigationTiming = getNavigationTiming();
         const metrics = navigationTiming as IMetrics;
-        // this.metrics.set(MetricsName.NT, metrics);
     };
 
     // 初始化 RF 
@@ -91,7 +86,6 @@ export default class Performance extends SendLog {
                     resObserve.disconnect();
                 }
                 const metrics = resourceFlow as IMetrics;
-                // this.metrics.set(MetricsName.RF, metrics);
             };
             // 当页面 pageshow 触发时，中止
             window.addEventListener('pageshow', stopListening, { once: true, capture: true });

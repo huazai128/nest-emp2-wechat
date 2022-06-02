@@ -45,7 +45,7 @@ export class RouterController {
     @Get("*")
     @Render('index')
     getTest(@Req() req: Request) {
-        return { data: 12 }
+        return { data: 11212 }
     }
 
 }

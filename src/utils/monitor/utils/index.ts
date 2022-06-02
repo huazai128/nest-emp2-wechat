@@ -1,4 +1,4 @@
-import { IMetrics, MPerformanceNavigationTiming, PerformanceEntryHandler } from "../interfaces"
+import { FN, FN1, IMetrics, MPerformanceNavigationTiming, PerformanceEntryHandler } from "../interfaces"
 
 export const supported = {
     performance: !!window.performance,
@@ -10,6 +10,31 @@ export const supported = {
 
 window.performance = window.performance || window.msPerformance || window.webkitPerformance;
 
+export interface MutationObserverHandler {
+    (mutation: MutationRecord): void
+}
+
+export const mOberver = (callback: MutationObserverHandler): MutationObserver => {
+    const mOb = new MutationObserver(function (mutationsList: MutationRecord[]) {
+        mutationsList.forEach(callback);
+    })
+    mOb.observe(document.body, {
+        attributes: true,
+        characterData: true,
+        childList: true,
+        subtree: true,
+        attributeOldValue: true,
+        characterDataOldValue: true,
+    })
+    return mOb
+}
+
+/**
+* 获取资源
+* @param {string} type
+* @param {PerformanceEntryHandler} callback
+* @return {*}  {(PerformanceObserver | undefined)}
+*/
 export const observe = (type: string, callback: PerformanceEntryHandler): PerformanceObserver | undefined => {
     try {
         // 类型合规，就返回 observe
@@ -23,6 +48,10 @@ export const observe = (type: string, callback: PerformanceEntryHandler): Perfor
     return undefined;
 };
 
+/**
+* 监听页面加载完成
+* @param {*} callback
+*/
 export const afterLoad = (callback: any) => {
     if (document.readyState === 'complete') {
         setTimeout(callback);
@@ -129,3 +158,53 @@ export const getResourceFlow = (resourceFlow: Array<PerformanceEntry>): Performa
 
     return observe('resource', entryHandler);
 };
+
+/**
+ * 重现监听pushState replaceState 事件
+ * @param {keyof History} type
+ * @return {*} 
+ */
+const wr = (type: keyof History) => {
+    const orig = history[type];
+    return function (this: unknown) {
+        // eslint-disable-next-line prefer-rest-params
+        const rv = orig.apply(this, arguments);
+        const e = new Event(type);
+        window.dispatchEvent(e);
+        return rv;
+    };
+};
+
+/**
+* 添加 pushState replaceState 事件
+*/
+export const wrHistory = (): void => {
+    history.pushState = wr('pushState');
+    history.replaceState = wr('replaceState');
+};
+
+/**
+* 为 pushState 以及 replaceState 方法添加 Event 事件
+* @param {FN1} handler
+*/
+export const proxyHistory = (handler: FN1): void => {
+    // 添加对 replaceState 的监听
+    window.addEventListener('replaceState', (e) => handler(e), true);
+    // 添加对 pushState 的监听
+    window.addEventListener('pushState', (e) => handler(e), true);
+};
+
+/**
+* 添加对 hashchange 的监听
+* @param {FN1} handler
+*/
+export const proxyHash = (handler: FN1): void => {
+    // hash 变化除了触发 hashchange ,也会触发 popstate 事件,而且会先触发 popstate 事件，我们可以统一监听 popstate
+    // 这里可以考虑是否需要监听 hashchange
+    window.addEventListener('hashchange', (e) => handler(e), true);
+    // 添加对 popstate 的监听
+    // 浏览器回退、前进行为触发的 可以自己判断是否要添加监听
+    window.addEventListener('popstate', (e) => handler(e), true);
+};
+
+
