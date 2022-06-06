@@ -1,5 +1,5 @@
 import { getFCP } from 'web-vitals';
-import { IMetrics } from "./interfaces"
+import { IMetrics, SendExtend } from "./interfaces"
 import { afterLoad, getFP, getNavigationTiming, getResourceFlow, mOberver, supported } from './utils'
 import SendLog from './send';
 
@@ -9,11 +9,12 @@ import SendLog from './send';
  * @class Performance
  * @extends {SendLog}
  */
-export default class WebVitals extends SendLog {
+export default class WebVitals {
     private startTime: number
     private diffTime = 0
-    constructor() {
-        super()
+    private sendLog: SendExtend['sendLog']
+    constructor({ sendLog }: SendExtend) {
+        this.sendLog = sendLog
         this.startTime = Date.now();
         this.initResourceFlow();
         this.initFMP()

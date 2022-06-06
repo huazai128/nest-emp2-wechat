@@ -1,6 +1,6 @@
 import BehaviorStore from "./behaviorStore";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName } from "./interfaces";
+import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo, SendExtend } from "./interfaces";
 import SendLog from "./send";
 import { mOberver } from "./utils";
 
@@ -10,33 +10,30 @@ import { mOberver } from "./utils";
  * @class UserVitals
  * @extends {SendLog}
  */
-export default class UserVitals extends SendLog {
+export default class UserVitals {
     // 最大行为追踪记录数
     public maxBehaviorRecords: number;
-    private behaviorTracking: BehaviorStore
+    public behaviorTracking: BehaviorStore
     private events: Array<string> = ['click', 'touchstart']
-    constructor() {
-        super();
+    private sendLog: SendExtend['sendLog']
+    constructor({ sendLog }: SendExtend) {
         this.maxBehaviorRecords = 100
+        this.sendLog = sendLog
         this.behaviorTracking = new BehaviorStore({ maxBehaviorRecords: this.maxBehaviorRecords });
         this.initClickHandler();
         this.initExposure();
         this.initHttpHandler();
-        this.initRouterChange(() => {
-            this.initPV()
-        })
     }
 
     /**
      * 上报pv
      * @memberof UserVitals
      */
-    initPV = () => {
-        console.log('获取PV上报数据', this.pageInfo)
+    initPV = (pageInfo: PageInfo) => {
         // this.sendLog() // 上报
         this.behaviorTracking.push({
             name: MetricsName.RCR,
-            value: this.pageInfo
+            value: pageInfo
         })
     }
 
@@ -69,7 +66,6 @@ export default class UserVitals extends SendLog {
      * @memberof UserVitals
      */
     initExposure = () => {
-        console.log('执行很多次吗,测试了正常')
         // 针对曝光研究
         const itOberser = new IntersectionObserver(function (entries, observer: IntersectionObserverInit) {
             entries.forEach((entry) => {
@@ -88,6 +84,7 @@ export default class UserVitals extends SendLog {
                         name: MetricsName.CE,
                         value: data,
                     }
+                    // 曝光不是用户行为，可以不作为采集信息
                     nodeRef.setAttribute('data-visible', 'y')
                 }
             });
@@ -105,7 +102,6 @@ export default class UserVitals extends SendLog {
         mOberver(function (mutation: MutationRecord) {
             const addedNodes = mutation.addedNodes
             const list = itOberser.takeRecords();
-            console.log(list, addedNodes, '是否有重复监听')
             addedNodes.forEach((node: any) => {
                 const isS = node.classList.contains('on-visible')
                 isS && itOberser.observe(node)
@@ -137,7 +133,6 @@ export default class UserVitals extends SendLog {
      */
     initHttpHandler = (): void => {
         const handler = (metrics: HttpMetrics) => {
-            console.log('上报http数据', metrics)
             this.behaviorTracking.push({
                 name: MetricsName.HT,
                 value: metrics

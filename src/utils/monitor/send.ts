@@ -8,7 +8,11 @@ export default class SendLog {
     public msObserver?: MutationObserver = undefined
     private curHref = ''
     private prevHref = ''
-    constructor() {
+    private isLoaded: boolean
+    private url: string
+    constructor(url: string) {
+        this.url = url
+        this.isLoaded = false
         this.initPageInfo()
     }
 
@@ -18,6 +22,7 @@ export default class SendLog {
         wrHistory()
         const handler = (e: Event) => {
             this.dynamicInfo(e);
+            this.isLoaded = true
             cb?.(e)
         };
         window.addEventListener('pageshow', handler, { once: true, capture: true });
@@ -93,15 +98,19 @@ export default class SendLog {
 
     /**
      * 发送日志
-     * @param {string} url
      * @param {*} params
      * @memberof SendLog
      */
-    sendLog = (url: string, params: any) => {
+    sendLog = (params: any) => {
+        if (!this.isLoaded) {
+            // 防止错误优先触发路由事件
+            this.dynamicInfo()
+        }
+        console.log(params, 'params', this.pageInfo)
         if (!!window.navigator?.sendBeacon) {
-            window.navigator?.sendBeacon(url, params)
+            window.navigator?.sendBeacon(this.url, params)
         } else {
-            this.sendImage(url, params)
+            this.sendImage(this.url, params)
         }
     }
 }

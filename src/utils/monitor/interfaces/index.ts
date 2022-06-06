@@ -1,3 +1,6 @@
+import BehaviorStore from "../behaviorStore";
+
+/* eslint-disable @typescript-eslint/ban-types */
 export interface IMetrics {
     [prop: string | number]: any;
 }
@@ -98,6 +101,23 @@ export enum MechanismType {
     UJ = 'unhandledrejection',
     HP = 'http',
     CS = 'cors',
-    VUE = 'vue',
     REACT = 'react'
 }
+
+export interface ExceptionMetrics {
+    errorType: string;
+    value?: string;
+    type: string;
+    stackTrace?: Object;
+    breadcrumbs?: Array<BehaviorStack>;
+    errorUid: string;
+    meta?: any;
+}
+
+
+export interface SendExtend {
+    sendLog: (params: any) => void
+    behaviorTracking?: BehaviorStore
+}
+
+

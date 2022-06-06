@@ -6,7 +6,9 @@ const List = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const nodeRef = (document as Document).getElementById("emp-root")
     useEffect(() => {
-
+        console.log('===')
+        const i = 1
+        i.map(() => { })
     }, [])
 
     return (
