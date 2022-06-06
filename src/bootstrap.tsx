@@ -5,7 +5,6 @@ import * as stores from '@src/stores/index'
 import 'intersection-observer'
 import 'mutationobserver-polyfill'
 import '@fastly/performance-observer-polyfill/polyfill'
-
 import Monitor from '@src/utils/monitor'
 const monitor = new Monitor()
 

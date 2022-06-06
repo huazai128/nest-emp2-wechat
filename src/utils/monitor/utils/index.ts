@@ -1,4 +1,4 @@
-import { FN, FN1, IMetrics, MPerformanceNavigationTiming, PerformanceEntryHandler } from "../interfaces"
+import { FN, FN1, IMetrics, MechanismType, MPerformanceNavigationTiming, PerformanceEntryHandler } from "../interfaces"
 
 export const supported = {
     performance: !!window.performance,
@@ -208,3 +208,14 @@ export const proxyHash = (handler: FN1): void => {
 };
 
 
+
+/**
+* 判断是js异常、静态资源异常还是跨域异常
+* @param {(ErrorEvent | Event)} event
+* @return {*} 
+*/
+export const getErrorKey = (event: ErrorEvent | Event) => {
+    const isJsError = event instanceof ErrorEvent;
+    if (!isJsError) return MechanismType.RS;
+    return event.message === 'Script error.' ? MechanismType.CS : MechanismType.JS;
+};

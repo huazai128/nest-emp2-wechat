@@ -46,7 +46,6 @@ export const proxyXmlHttp = (sendHandler: FN1 | null | undefined, loadHandler: F
     }
 };
 
-
 // 调用 proxyFetch 即可完成全局监听 fetch
 export const proxyFetch = (sendHandler: FN1 | null | undefined, loadHandler: FN1) => {
     if ('fetch' in window && typeof window.fetch === 'function') {

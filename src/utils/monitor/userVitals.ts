@@ -2,7 +2,7 @@ import BehaviorStore from "./behaviorStore";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
 import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName } from "./interfaces";
 import SendLog from "./send";
-import { mOberver, proxyHistory } from "./utils";
+import { mOberver } from "./utils";
 
 /**
  * 用户行为
@@ -77,7 +77,7 @@ export default class UserVitals extends SendLog {
                 const nodeRef = entry.target as HTMLElement
                 const att = nodeRef.getAttribute('data-visible')
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.55 && !att) {
-                    let data: any = nodeRef.dataset || {}
+                    let data: any = nodeRef.dataset || {} // 曝光买点日志
                     data = {
                         ...data,
                         classList: Array.from(nodeRef.classList),
@@ -94,7 +94,7 @@ export default class UserVitals extends SendLog {
         }, {
             root: null,
             rootMargin: '0px',
-            threshold: [0.1, 0.85]
+            threshold: [0.1, 0.55]
         })
 
         const nodes = (document as Document).querySelectorAll('.on-visible')

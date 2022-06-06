@@ -4,8 +4,11 @@ import './style.scss'
 
 const List = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false)
-
     const nodeRef = (document as Document).getElementById("emp-root")
+    useEffect(() => {
+
+    }, [])
+
     return (
         <Fragment>
             <div className='ls-box flex flex-center'>

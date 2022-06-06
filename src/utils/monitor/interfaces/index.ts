@@ -91,3 +91,13 @@ export interface HttpMetrics {
     statusText: string;
     response?: any;
 }
+
+export enum MechanismType {
+    JS = 'js',
+    RS = 'resource',
+    UJ = 'unhandledrejection',
+    HP = 'http',
+    CS = 'cors',
+    VUE = 'vue',
+    REACT = 'react'
+}
