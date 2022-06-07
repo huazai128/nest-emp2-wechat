@@ -1,4 +1,5 @@
 import BehaviorStore from "./behaviorStore";
+import CommonExtend from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
 import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo, SendExtend } from "./interfaces";
 import { mOberver } from "./utils";
@@ -9,15 +10,14 @@ import { mOberver } from "./utils";
  * @class UserVitals
  * @extends {SendLog}
  */
-export default class UserVitals {
+export default class UserVitals extends CommonExtend {
     // 最大行为追踪记录数
     public maxBehaviorRecords: number;
     public behaviorTracking: BehaviorStore
     private events: Array<string> = ['click', 'touchstart']
-    private sendLog: SendExtend['sendLog']
-    constructor({ sendLog }: SendExtend) {
+    constructor(data: SendExtend) {
+        super(data)
         this.maxBehaviorRecords = 100
-        this.sendLog = sendLog
         this.behaviorTracking = new BehaviorStore({ maxBehaviorRecords: this.maxBehaviorRecords });
         this.initClickHandler();
         this.initExposure();

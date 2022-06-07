@@ -1,15 +1,12 @@
-import BehaviorStore from "./behaviorStore";
+import CommonExtend from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
 import { ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType, SendExtend } from "./interfaces";
 import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
 
-export default class ErrorVitals {
+export default class ErrorVitals extends CommonExtend {
     private errorUids: Array<string>
-    private behaviorTracking?: BehaviorStore = undefined
-    private sendLog: SendExtend['sendLog']
-    constructor({ behaviorTracking, sendLog }: SendExtend) {
-        this.sendLog = sendLog
-        behaviorTracking && (this.behaviorTracking = behaviorTracking)
+    constructor(data: SendExtend) {
+        super(data)
         this.errorUids = []
         this.initJsError()
         this.initResourceError()
@@ -143,7 +140,6 @@ export default class ErrorVitals {
         }
         window.addEventListener('unhandledrejection', (e) => handler(e), true)
     }
-
 
     /**
      * 用于处理promise 错误中，无法获取是那个接口报错

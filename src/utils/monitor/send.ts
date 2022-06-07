@@ -106,6 +106,7 @@ export default class SendLog {
             // 防止错误优先触发路由事件
             this.dynamicInfo()
         }
+        console.log(params)
         if (!!window.navigator?.sendBeacon) {
             window.navigator?.sendBeacon(this.url, params)
         } else {

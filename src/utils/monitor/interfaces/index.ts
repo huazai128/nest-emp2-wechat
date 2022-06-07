@@ -6,6 +6,12 @@ export interface IMetrics {
 }
 
 export enum MetricsName {
+    FP = 'first-paint',
+    FCP = 'first-contentful-paint',
+    FMP = 'first-meaning-paint',
+    NT = 'navigation-timing',
+    RF = 'resource-flow',
+
     RCR = 'router-change-record',
     CBR = 'click-behavior-record',
     CDR = 'custom-define-record',

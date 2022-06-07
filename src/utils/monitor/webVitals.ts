@@ -1,4 +1,5 @@
 import { getFCP } from 'web-vitals';
+import CommonExtend from './commonExtend';
 import { IMetrics, SendExtend } from "./interfaces"
 import { afterLoad, getFP, getNavigationTiming, getResourceFlow, mOberver, supported } from './utils'
 
@@ -8,12 +9,11 @@ import { afterLoad, getFP, getNavigationTiming, getResourceFlow, mOberver, suppo
  * @class Performance
  * @extends {SendLog}
  */
-export default class WebVitals {
+export default class WebVitals extends CommonExtend {
     private startTime: number
     private diffTime = 0
-    private sendLog: SendExtend['sendLog']
-    constructor({ sendLog }: SendExtend) {
-        this.sendLog = sendLog
+    constructor(data: SendExtend) {
+        super(data)
         this.startTime = Date.now();
         this.initResourceFlow();
         this.initFMP()
@@ -48,7 +48,7 @@ export default class WebVitals {
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
                     if (!isOnce) {
                         const t = Date.now() - time + this.diffTime
-                        console.log('FMP', t)
+                        console.log('FMP===', t)
                         isOnce = true
                     }
                 }
@@ -62,8 +62,8 @@ export default class WebVitals {
             const addedNodes = mutation.addedNodes
             addedNodes.forEach((node: any) => {
                 iOb.observe(node)
+                mO.disconnect()
             })
-            mO.disconnect()
         })
     }
 
