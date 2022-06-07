@@ -1,7 +1,6 @@
 import { getFCP } from 'web-vitals';
 import { IMetrics, SendExtend } from "./interfaces"
 import { afterLoad, getFP, getNavigationTiming, getResourceFlow, mOberver, supported } from './utils'
-import SendLog from './send';
 
 /**
  * 性能

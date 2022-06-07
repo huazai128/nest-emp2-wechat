@@ -1,7 +1,6 @@
 import BehaviorStore from "./behaviorStore";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
 import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo, SendExtend } from "./interfaces";
-import SendLog from "./send";
 import { mOberver } from "./utils";
 
 /**
@@ -32,7 +31,7 @@ export default class UserVitals {
     initPV = (pageInfo: PageInfo) => {
         // this.sendLog() // 上报
         this.behaviorTracking.push({
-            name: MetricsName.RCR,
+            reportsType: MetricsName.RCR,
             value: pageInfo
         })
     }
@@ -51,7 +50,7 @@ export default class UserVitals {
                 text: target.textContent,
             }
             this.behaviorTracking.push({
-                name: MetricsName.CBR,
+                reportsType: MetricsName.CBR,
                 value: obj
             })
             // 上报点击事件
@@ -73,7 +72,7 @@ export default class UserVitals {
                 const nodeRef = entry.target as HTMLElement
                 const att = nodeRef.getAttribute('data-visible')
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.55 && !att) {
-                    let data: any = nodeRef.dataset || {} // 曝光买点日志
+                    let data: any = nodeRef.dataset || {} // 曝光埋点日志数据
                     data = {
                         ...data,
                         classList: Array.from(nodeRef.classList),
@@ -121,7 +120,7 @@ export default class UserVitals {
         return (options: CustomAnalyticsData) => {
             // 记录到用户行为追踪队列
             this.behaviorTracking.push({
-                name: MetricsName.CDR,
+                reportsType: MetricsName.CDR,
                 value: options,
             });
         }
@@ -134,7 +133,7 @@ export default class UserVitals {
     initHttpHandler = (): void => {
         const handler = (metrics: HttpMetrics) => {
             this.behaviorTracking.push({
-                name: MetricsName.HT,
+                reportsType: MetricsName.HT,
                 value: metrics
             })
         }

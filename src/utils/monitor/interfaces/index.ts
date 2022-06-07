@@ -47,6 +47,7 @@ export interface PerformanceEntryHandler {
 
 export type FN = () => void
 export type FN1 = (e: any) => void
+export type FN2<T, P> = (e: T, other: P) => void
 
 export interface MPerformanceNavigationTiming {
     FP?: number;
@@ -68,7 +69,8 @@ export interface BehaviorRecordsOptions {
 }
 
 export interface BehaviorStack {
-    name: MetricsName;
+    // 上报类型
+    reportsType: MetricsName;
     value: any;
 }
 
@@ -105,7 +107,7 @@ export enum MechanismType {
 }
 
 export interface ExceptionMetrics {
-    errorType: string;
+    reportsType: string;
     value?: string;
     type: string;
     stackTrace?: Object;
@@ -120,4 +122,9 @@ export interface SendExtend {
     behaviorTracking?: BehaviorStore
 }
 
+
+export interface ErrorInfo {
+    componentStack: string
+    componentName: string
+}
 

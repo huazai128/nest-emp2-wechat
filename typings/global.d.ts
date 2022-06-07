@@ -2,6 +2,7 @@ declare interface Window {
     INIT_DATA: Record<string, any>
     msPerformance: Record<string, any>
     webkitPerformance: Record<string, any>
+    monitor: Record<string, any>
 }
 
 /**

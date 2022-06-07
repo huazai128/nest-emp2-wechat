@@ -1,6 +1,6 @@
 import { FN1, PageInfo } from "./interfaces";
-import Cookies from 'js-cookie'
 import { proxyHash, proxyHistory, wrHistory } from "./utils";
+import Cookies from 'js-cookie'
 
 export default class SendLog {
     // 处理基本的页面信息，然后发送
@@ -106,7 +106,6 @@ export default class SendLog {
             // 防止错误优先触发路由事件
             this.dynamicInfo()
         }
-        console.log(params, 'params', this.pageInfo)
         if (!!window.navigator?.sendBeacon) {
             window.navigator?.sendBeacon(this.url, params)
         } else {

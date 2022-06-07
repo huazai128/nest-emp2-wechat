@@ -263,7 +263,7 @@ export function parseStackFrames(error: Error) {
     return frames.slice(0, STACKTRACE_LIMIT);
 }
 
-// 对每一个错误详情，生成一串编码
+// 对每一个错误详情，生成一串编码, btoa不能处理中文,会报错
 export const getErrorUid = (input: string) => {
-    return window.btoa(decodeURI(encodeURIComponent(input)));
+    return window.btoa(unescape(encodeURIComponent(input)));
 };

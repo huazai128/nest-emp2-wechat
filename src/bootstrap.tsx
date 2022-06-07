@@ -6,7 +6,7 @@ import 'intersection-observer'
 import 'mutationobserver-polyfill'
 import '@fastly/performance-observer-polyfill/polyfill'
 import Monitor from '@src/utils/monitor'
-const monitor = new Monitor('')
+window.monitor = new Monitor('')
 
 ReactDOM.render(
     <RootStoreProvider store={stores}>

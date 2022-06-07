@@ -1,4 +1,4 @@
-import { FN1 } from "./interfaces";
+import { ErrorInfo, FN1, FN2 } from "./interfaces";
 import UserVitals from "./userVitals";
 import WebVitals from "./webVitals";
 import ErrorVitals from './errorVitals'
@@ -10,6 +10,7 @@ export default class Monitor {
     private errorVitals: ErrorVitals
     private send: SendLog
     private customHandler: FN1
+    private initReactError: FN2<Error, ErrorInfo>
     constructor(url: string) {
         this.send = new SendLog(url)
         this.webVitals = new WebVitals({ sendLog: this.send.sendLog })
@@ -19,6 +20,7 @@ export default class Monitor {
             sendLog: this.send.sendLog
         })
         this.customHandler = this.userVitals.initCustomerHandler()
+        this.initReactError = this.errorVitals.initReactError
         this.send.initRouterChange(() => {
             this.userVitals.initPV(this.send.pageInfo)
         })
