@@ -7,26 +7,33 @@ import { IMetrics, MetricsName } from "./interfaces";
  */
 export default class MetricsStore {
     private state: Map<MetricsName | string, IMetrics>;
+    public keys: Array<MetricsName | string>
 
     constructor() {
+        this.keys = []
         this.state = new Map<MetricsName | string, IMetrics>();
     }
 
     set = (key: MetricsName | string, value: IMetrics): void => {
+        if (!this.state.has(key)) {
+            this.keys.push(key)
+        }
         this.state.set(key, value);
     }
 
     add = (key: MetricsName | string, value: IMetrics): void => {
+        if (!this.state.has(key)) {
+            this.keys.push(key)
+        }
         const keyValue = this.state.get(key);
         this.state.set(key, keyValue ? keyValue.concat([value]) : [value]);
     }
 
     get = (key: MetricsName | string): IMetrics | undefined => {
-        return this.state.get(key);
-    }
-
-    deleteT = (key: MetricsName | string) => {
+        const value = this.state.get(key)
         this.state.delete(key)
+        this.keys = this.keys.filter((item) => item !== key)
+        return value;
     }
 
     has = (key: MetricsName | string): boolean => {

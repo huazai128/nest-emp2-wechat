@@ -1,7 +1,7 @@
 import BehaviorStore from "./behaviorStore";
 import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo } from "./interfaces";
+import { BehaviorStack, CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo } from "./interfaces";
 import { mOberver } from "./utils";
 
 /**
@@ -15,25 +15,25 @@ export default class UserVitals extends CommonExtend {
     public maxBehaviorRecords: number;
     public behaviorTracking: BehaviorStore
     private events: Array<string> = ['click', 'touchstart']
-    constructor(data: IProps) {
+    constructor({ isExposure, ...data }: IProps) {
         super(data)
         this.maxBehaviorRecords = 100
         this.behaviorTracking = new BehaviorStore({ maxBehaviorRecords: this.maxBehaviorRecords });
         this.initClickHandler();
-        this.initExposure();
         this.initHttpHandler();
+        isExposure && this.initExposure();
     }
 
     /**
      * 上报pv
      * @memberof UserVitals
      */
-    initPV = (pageInfo: PageInfo) => {
-        // this.sendLog() // 上报
-        this.behaviorTracking.push({
+    initPV = () => {
+        const metrice = {
             reportsType: MetricsName.RCR,
-            value: pageInfo
-        })
+        }
+        this.add(MetricsName.RCR, metrice)
+        this.behaviorTracking.push(metrice)
     }
 
     /**
@@ -43,17 +43,18 @@ export default class UserVitals extends CommonExtend {
     initClickHandler = () => {
         const handle = (e: MouseEvent | any) => {
             const target = e.target
-            const obj = {
+            const data = target.dataset || {} // 点击事件上报参数
+            const metrice: BehaviorStack = {
                 reportsType: MetricsName.CBR,
                 id: target.id,
                 classList: Array.from(target.classList),
                 tagName: target.tagName,
                 text: target.textContent,
+                ...data,
             }
-            this.add(MetricsName.CBR, obj)
+            this.add(MetricsName.CBR, metrice)
             this.behaviorTracking.push({
-                reportsType: MetricsName.CBR,
-                value: obj
+                ...metrice
             })
         }
         this.events.forEach((event) => {
@@ -67,23 +68,21 @@ export default class UserVitals extends CommonExtend {
      */
     initExposure = () => {
         // 针对曝光研究
-        const itOberser = new IntersectionObserver(function (entries, observer: IntersectionObserverInit) {
+        const itOberser = new IntersectionObserver((entries, observer: IntersectionObserverInit) => {
             entries.forEach((entry) => {
                 // 检查元素发生了碰撞
                 const nodeRef = entry.target as HTMLElement
                 const att = nodeRef.getAttribute('data-visible')
                 if (entry.isIntersecting && entry.intersectionRatio >= 0.55 && !att) {
-                    let data: any = nodeRef.dataset || {} // 曝光埋点日志数据
-                    data = {
-                        ...data,
+                    const data: any = nodeRef.dataset || {} // 曝光埋点日志数据
+                    const metrice: BehaviorStack = {
+                        reportsType: MetricsName.CE,
                         classList: Array.from(nodeRef.classList),
                         tagName: nodeRef.tagName,
                         text: nodeRef.textContent,
+                        ...data,
                     }
-                    const obj = {
-                        name: MetricsName.CE,
-                        value: data,
-                    }
+                    this.add(MetricsName.CE, metrice)
                     // 曝光不是用户行为，可以不作为采集信息
                     nodeRef.setAttribute('data-visible', 'y')
                 }
@@ -119,11 +118,13 @@ export default class UserVitals extends CommonExtend {
      */
     initCustomerHandler = (): FN1 => {
         return (options: CustomAnalyticsData) => {
-            // 记录到用户行为追踪队列
-            this.behaviorTracking.push({
+            const metrice: BehaviorStack = {
                 reportsType: MetricsName.CDR,
-                value: options,
-            });
+                ...options,
+            }
+            this.add(MetricsName.CDR, metrice)
+            // 记录到用户行为追踪队列
+            this.behaviorTracking.push(metrice);
         }
     }
 
@@ -133,10 +134,13 @@ export default class UserVitals extends CommonExtend {
      */
     initHttpHandler = (): void => {
         const handler = (metrics: HttpMetrics) => {
-            this.behaviorTracking.push({
+            const metrice = {
                 reportsType: MetricsName.HT,
-                value: metrics
-            })
+                ...metrics,
+            }
+            this.add(MetricsName.HT, metrice)
+            // 记录到用户行为追踪队列
+            this.behaviorTracking.push(metrice);
         }
         proxyXmlHttp(null, handler)
         proxyFetch(null, handler)

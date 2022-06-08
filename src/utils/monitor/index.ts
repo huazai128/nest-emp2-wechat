@@ -4,6 +4,10 @@ import WebVitals from "./webVitals";
 import ErrorVitals from './errorVitals'
 import SendLog from "./send";
 
+interface MonitorProps {
+    url: string // 上报Url
+    isExposure?: boolean // 是否支持曝光埋点
+}
 export default class Monitor {
     private webVitals: WebVitals
     private userVitals: UserVitals
@@ -11,10 +15,10 @@ export default class Monitor {
     private send: SendLog
     public customHandler: FN1
     public initReactError: FN2<Error, ErrorInfo>
-    constructor(url: string) {
+    constructor({ url, isExposure }: MonitorProps) {
         this.send = new SendLog(url)
         this.webVitals = new WebVitals({ ...this.send })
-        this.userVitals = new UserVitals({ ...this.send })
+        this.userVitals = new UserVitals({ ...this.send, isExposure: !!isExposure })
         this.errorVitals = new ErrorVitals({
             behaviorTracking: this.userVitals.behaviorTracking,
             ...this.send
@@ -22,7 +26,7 @@ export default class Monitor {
         this.customHandler = this.userVitals.initCustomerHandler()
         this.initReactError = this.errorVitals.initReactError
         this.send.initRouterChange(() => {
-            this.userVitals.initPV(this.send.pageInfo)
+            this.userVitals.initPV()
         })
     }
 }

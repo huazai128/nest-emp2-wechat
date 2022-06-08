@@ -78,18 +78,18 @@ export interface BehaviorRecordsOptions {
 export interface BehaviorStack {
     // 上报类型
     reportsType: MetricsName;
-    value: any;
+    [key: string]: any;
 }
 
 
 export interface CustomAnalyticsData {
-    // 事件类别 互动的对象 eg:Video
+    // 事件类别 互动的对象
     eventCategory: string;
-    // 事件动作 互动动作方式 eg:play
+    // 事件动作 互动动作方式 
     eventAction: string;
-    // 事件标签 对事件进行分类 eg:
+    // 事件标签 对事件进行分类 
     eventLabel: string;
-    // 事件值 与事件相关的数值   eg:180min
+    // 事件值 与事件相关的数值   
     eventValue?: string;
 }
 

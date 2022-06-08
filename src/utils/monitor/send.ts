@@ -1,4 +1,4 @@
-import { FN1, PageInfo } from "./interfaces";
+import { FN1, MetricsName, PageInfo } from "./interfaces";
 import { proxyHash, proxyHistory, wrHistory } from "./utils";
 import Cookies from 'js-cookie'
 import MetricsStore from "./metricsStore";
@@ -29,13 +29,18 @@ export default class SendLog extends MetricsStore {
         wrHistory()
         const handler = (e: Event) => {
             this.dynamicInfo(e);
+            setTimeout(() => {
+                this.handleRoutineReport()
+            }, 100)
             this.isLoaded = true
             cb?.(e)
         };
+
         window.addEventListener('pageshow', handler, { once: true, capture: true });
         proxyHash(handler);
         proxyHistory(handler);
     }
+
 
     /**
      * 初始化监听网络状态
@@ -102,7 +107,14 @@ export default class SendLog extends MetricsStore {
             // 255: 任何其他来源。即非刷新/ 非前进后退、非点击链接 / 地址栏输入 / 表单提交 / 脚本操作等。
         }
         // 这里触发一下PV上报
-        // this.sendLog()
+    }
+
+    /**
+     * 处理常规上报, 延迟100ms上报，防止抢占网络资源 
+     * @memberof SendLog
+     */
+    handleRoutineReport = () => {
+        console.log('--==', MetricsName)
     }
 
     /**
@@ -130,10 +142,9 @@ export default class SendLog extends MetricsStore {
      */
     sendLog = (params: any) => {
         if (!this.isLoaded) {
-            // 防止错误优先触发路由事件
+            // 防止错误优先触发
             this.dynamicInfo()
         }
-        console.log({ ...this.pageInfo, ...params })
         if (!!window.navigator?.sendBeacon) {
             window.navigator?.sendBeacon(this.url, params)
         } else {
