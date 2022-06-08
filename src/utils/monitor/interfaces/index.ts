@@ -11,7 +11,6 @@ export enum MetricsName {
     FMP = 'first-meaning-paint',
     NT = 'navigation-timing',
     RF = 'resource-flow',
-
     RCR = 'router-change-record',
     CBR = 'click-behavior-record',
     CDR = 'custom-define-record',
@@ -44,6 +43,8 @@ export interface PageInfo {
     jumpType?: string
     // 用户来源方式
     type?: number
+    // 网络状况
+    effectiveType?: string
 }
 
 

@@ -267,3 +267,18 @@ export function parseStackFrames(error: Error) {
 export const getErrorUid = (input: string) => {
     return window.btoa(unescape(encodeURIComponent(input)));
 };
+
+
+/**
+ * 处理数字类型
+ * @export
+ * @param {*} e
+ * @return {*} 
+ */
+export function normalizePerformanceRecord(e: any) {
+    Object.keys(e).forEach((p) => {
+        const v = e[p];
+        if (typeof v === 'number') e[p] = v === 0 ? undefined : parseFloat(v.toFixed(2));
+    });
+    return e;
+}

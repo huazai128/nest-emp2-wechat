@@ -1,11 +1,11 @@
-import CommonExtend from "./commonExtend";
+import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType, SendExtend } from "./interfaces";
+import { ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
 import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
 
 export default class ErrorVitals extends CommonExtend {
     private errorUids: Array<string>
-    constructor(data: SendExtend) {
+    constructor(data: IProps) {
         super(data)
         this.errorUids = []
         this.initJsError()

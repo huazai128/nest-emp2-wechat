@@ -1,7 +1,7 @@
 import BehaviorStore from "./behaviorStore";
-import CommonExtend from "./commonExtend";
+import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo, SendExtend } from "./interfaces";
+import { CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo } from "./interfaces";
 import { mOberver } from "./utils";
 
 /**
@@ -15,7 +15,7 @@ export default class UserVitals extends CommonExtend {
     public maxBehaviorRecords: number;
     public behaviorTracking: BehaviorStore
     private events: Array<string> = ['click', 'touchstart']
-    constructor(data: SendExtend) {
+    constructor(data: IProps) {
         super(data)
         this.maxBehaviorRecords = 100
         this.behaviorTracking = new BehaviorStore({ maxBehaviorRecords: this.maxBehaviorRecords });
@@ -44,16 +44,17 @@ export default class UserVitals extends CommonExtend {
         const handle = (e: MouseEvent | any) => {
             const target = e.target
             const obj = {
+                reportsType: MetricsName.CBR,
                 id: target.id,
                 classList: Array.from(target.classList),
                 tagName: target.tagName,
                 text: target.textContent,
             }
+            this.add(MetricsName.CBR, obj)
             this.behaviorTracking.push({
                 reportsType: MetricsName.CBR,
                 value: obj
             })
-            // 上报点击事件
         }
         this.events.forEach((event) => {
             window.addEventListener(event, handle, true)

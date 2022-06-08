@@ -1,8 +1,9 @@
 import { FN1, PageInfo } from "./interfaces";
 import { proxyHash, proxyHistory, wrHistory } from "./utils";
 import Cookies from 'js-cookie'
+import MetricsStore from "./metricsStore";
 
-export default class SendLog {
+export default class SendLog extends MetricsStore {
     // 处理基本的页面信息，然后发送
     public pageInfo: PageInfo = {}
     public msObserver?: MutationObserver = undefined
@@ -11,12 +12,18 @@ export default class SendLog {
     private isLoaded: boolean
     private url: string
     constructor(url: string) {
+        super()
         this.url = url
         this.isLoaded = false
         this.initPageInfo()
+        this.initChangeConnection()
     }
 
-    // 用于监听路由的变化，这样处理没办法获取路由跳转方式
+    /**
+     * 用于监听路由的变化，这样处理没办法获取路由跳转方式
+     * @param {FN1} [cb]
+     * @memberof SendLog
+     */
     initRouterChange = (cb?: FN1) => {
         // 也可以用MutationObserver监听判断路由变化。
         wrHistory()
@@ -28,6 +35,26 @@ export default class SendLog {
         window.addEventListener('pageshow', handler, { once: true, capture: true });
         proxyHash(handler);
         proxyHistory(handler);
+    }
+
+    /**
+     * 初始化监听网络状态
+     * @memberof SendLog
+     */
+    initChangeConnection = () => {
+        const connection: any = navigator.connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+        if (connection) {
+            this.pageInfo = {
+                ...this.pageInfo,
+                effectiveType: connection.effectiveType
+            }
+            connection.addEventListener('change', () => {
+                this.pageInfo = {
+                    ...this.pageInfo,
+                    effectiveType: connection.effectiveType
+                }
+            });
+        }
     }
 
     /**
@@ -106,7 +133,7 @@ export default class SendLog {
             // 防止错误优先触发路由事件
             this.dynamicInfo()
         }
-        console.log(params)
+        console.log({ ...this.pageInfo, ...params })
         if (!!window.navigator?.sendBeacon) {
             window.navigator?.sendBeacon(this.url, params)
         } else {

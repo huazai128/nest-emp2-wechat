@@ -6,36 +6,38 @@ import { IMetrics, MetricsName } from "./interfaces";
  * @class MetricsStore
  */
 export default class MetricsStore {
-    state: Map<MetricsName | string, IMetrics>;
-    keys: Array<keyof MetricsName>
+    private state: Map<MetricsName | string, IMetrics>;
 
     constructor() {
-        this.keys = []
         this.state = new Map<MetricsName | string, IMetrics>();
     }
 
-    set(key: MetricsName | string, value: IMetrics): void {
+    set = (key: MetricsName | string, value: IMetrics): void => {
         this.state.set(key, value);
     }
 
-    add(key: MetricsName | string, value: IMetrics): void {
+    add = (key: MetricsName | string, value: IMetrics): void => {
         const keyValue = this.state.get(key);
         this.state.set(key, keyValue ? keyValue.concat([value]) : [value]);
     }
 
-    get(key: MetricsName | string): IMetrics | undefined {
+    get = (key: MetricsName | string): IMetrics | undefined => {
         return this.state.get(key);
     }
 
-    has(key: MetricsName | string): boolean {
+    deleteT = (key: MetricsName | string) => {
+        this.state.delete(key)
+    }
+
+    has = (key: MetricsName | string): boolean => {
         return this.state.has(key);
     }
 
-    clear() {
+    clear = () => {
         this.state.clear();
     }
 
-    getValues(): IMetrics {
+    getValues = (): IMetrics => {
         // Map 转为 对象 返回
         return Object.fromEntries(this.state);
     }
