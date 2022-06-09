@@ -1,3 +1,6 @@
+import 'intersection-observer'
+import 'mutationobserver-polyfill'
+import '@fastly/performance-observer-polyfill/polyfill'
 import { ErrorInfo, FN1, FN2 } from "./interfaces";
 import UserVitals from "./userVitals";
 import WebVitals from "./webVitals";
