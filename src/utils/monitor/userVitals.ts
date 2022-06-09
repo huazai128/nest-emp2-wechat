@@ -1,7 +1,7 @@
 import BehaviorStore from "./behaviorStore";
 import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { BehaviorStack, CustomAnalyticsData, FN1, HttpMetrics, MetricsName, PageInfo } from "./interfaces";
+import { BehaviorStack, CustomAnalyticsData, FN1, HttpMetrics, MetricsName } from "./interfaces";
 import { mOberver } from "./utils";
 
 /**

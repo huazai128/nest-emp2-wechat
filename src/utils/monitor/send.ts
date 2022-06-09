@@ -106,7 +106,6 @@ export default class SendLog extends MetricsStore {
             // 2: 点击前进或后退按钮。
             // 255: 任何其他来源。即非刷新/ 非前进后退、非点击链接 / 地址栏输入 / 表单提交 / 脚本操作等。
         }
-        // 这里触发一下PV上报
     }
 
     /**

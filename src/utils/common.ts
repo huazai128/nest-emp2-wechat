@@ -1,5 +1,5 @@
 /**
- * 解决图片跨域问题
+ * 解决画卡、下载图片跨域问题
  * @export
  * @param {string} api
  * @return {*} 
