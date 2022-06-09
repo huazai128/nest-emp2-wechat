@@ -55,7 +55,6 @@ export default class ErrorVitals extends CommonExtend {
                     frames: parseStackFrames(event.error)
                 },
                 // 用户行为追踪 breadcrumbs 在 errorSendHandler 中统一封装
-                // 页面基本信息 pageInformation 也在 errorSendHandler 中统一封装
                 // 错误的标识码
                 errorUid: errUid,
                 // 其他信息
@@ -92,7 +91,6 @@ export default class ErrorVitals extends CommonExtend {
                 // 错误类型
                 type: 'ResourceError',
                 // 用户行为追踪 breadcrumbs 在 errorSendHandler 中统一封装
-                // 页面基本信息 pageInformation 也在 errorSendHandler 中统一封装
                 // 错误的标识码
                 errorUid: errUid,
                 // 其他信息
@@ -129,7 +127,6 @@ export default class ErrorVitals extends CommonExtend {
                     frames: parseStackFrames(e.reason),
                 },
                 // 用户行为追踪 breadcrumbs 在 errorSendHandler 中统一封装
-                // 页面基本信息 pageInformation 也在 errorSendHandler 中统一封装
                 // 错误的标识码
                 errorUid: errUid,
                 // 附带信息
@@ -158,7 +155,6 @@ export default class ErrorVitals extends CommonExtend {
                 // 错误类型
                 type: 'HttpError',
                 // 用户行为追踪 breadcrumbs 在 errorSendHandler 中统一封装
-                // 页面基本信息 pageInformation 也在 errorSendHandler 中统一封装
                 // 错误的标识码
                 errorUid: errUid,
                 // 附带信息
@@ -220,7 +216,6 @@ export default class ErrorVitals extends CommonExtend {
                 frames: parseStackFrames(error)
             },
             // 用户行为追踪 breadcrumbs 在 errorSendHandler 中统一封装
-            // 页面基本信息 pageInformation 也在 errorSendHandler 中统一封装
             // 错误的标识码
             errorUid: errUid,
             // 其他信息
