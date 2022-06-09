@@ -110,29 +110,57 @@ export default class SendLog extends MetricsStore {
     }
 
     /**
-     * 处理常规上报, 延迟100ms上报，防止抢占网络资源 
+     * 通用的方法
+     * @param {(MetricsName | string)} key
+     * @memberof SendLog
+     */
+    handlerCommon = (key: MetricsName | string) => {
+        if (!this.state.has(key)) {
+            this.keys.push(key)
+        }
+        if (!this.isOver) {
+            this.isOver = true
+            this.handleRoutineReport()
+        }
+    }
+
+    /**
+     * 处理常规上报, 首次延迟100ms上报，防止抢占网络资源 
      * @memberof SendLog
      */
     handleRoutineReport = () => {
-        console.log('--==', MetricsName)
+        const loop = () => {
+            const key = this.keys[0]
+            if (key) {
+                const metrics = this.get(key)
+                if (Array.isArray(metrics)) {
+                    metrics.forEach((item) => {
+                        this.sendLog(item)
+                    })
+                } else {
+                    this.sendLog(metrics)
+                }
+                setTimeout(() => {
+                    loop()
+                }, 300)
+            }
+        }
+        loop()
     }
 
     /**
      * 图片发送
      * @param {string} url
-     * @param {object} params
      * @memberof SendLog
      */
-    sendImage = (url: string, params: object) => {
-        const img = new Image()
-        img.style.display = 'none'
+    sendImage = (url: string,) => {
+        let img = new Image()
         const removeImage = function () {
-            img.parentNode?.removeChild(img)
+            img = undefined as any
         }
         img.onload = removeImage
         img.onerror = removeImage
         img.src = `${url}`
-        document.body.appendChild(img)
     }
 
     /**
@@ -140,15 +168,23 @@ export default class SendLog extends MetricsStore {
      * @param {*} params
      * @memberof SendLog
      */
+    // eslint-disable-next-line @typescript-eslint/ban-types
     sendLog = (params: any) => {
         if (!this.isLoaded) {
             // 防止错误优先触发
             this.dynamicInfo()
         }
+        params = {
+            ...this.pageInfo,
+            ...params,
+        }
+        // 这里要对数据进行处理才能发送
+        console.log(params)
+        // params = JSON.stringify()
         if (!!window.navigator?.sendBeacon) {
             window.navigator?.sendBeacon(this.url, params)
         } else {
-            this.sendImage(this.url, params)
+            this.sendImage(this.url)
         }
     }
 }
