@@ -6,18 +6,16 @@ export type IProps = Omit<MetricsStore, 'state'> & SendExtend & {
     isExposure?: boolean
 }
 export default class CommonExtend {
-    public behaviorTracking?: BehaviorStore = undefined
     public sendLog: SendExtend['sendLog']
     public set: MetricsStore['set']
     public add: MetricsStore['add']
     public get: MetricsStore['get']
     public clear: MetricsStore['clear']
-    constructor({ behaviorTracking, sendLog, set, add, get, clear }: IProps) {
+    constructor({ sendLog, set, add, get, clear }: IProps) {
         this.sendLog = sendLog
         this.set = set
         this.add = add
         this.get = get
         this.clear = clear
-        behaviorTracking && (this.behaviorTracking = behaviorTracking)
     }
 }

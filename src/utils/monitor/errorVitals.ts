@@ -1,6 +1,7 @@
+import BehaviorStore from "./behaviorStore";
 import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
+import { BehaviorStack, ErrorExtend, ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
 import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
 
 /**
@@ -10,9 +11,13 @@ import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
  * @extends {CommonExtend}
  */
 export default class ErrorVitals extends CommonExtend {
+    private behaviorTracking: BehaviorStore
     private errorUids: Array<string>
-    constructor(data: IProps) {
+    private behaviorLen: ErrorExtend['behaviorLen']
+    constructor({ behaviorTracking, behaviorLen, ...data }: IProps & ErrorExtend) {
         super(data)
+        this.behaviorTracking = behaviorTracking
+        this.behaviorLen = behaviorLen || -20
         this.errorUids = []
         this.initJsError()
         this.initResourceError()
@@ -25,9 +30,10 @@ export default class ErrorVitals extends CommonExtend {
      * @memberof ErrorVitals
      */
     errorSendHandler = (error: ExceptionMetrics) => {
+        const list = this.behaviorTracking?.get()
         const errorInfo = {
             ...error,
-            breadcrumbs: this.behaviorTracking?.get(),
+            breadcrumbs: list?.slice(this.behaviorLen), // 获取行为操作最后20个,也可以外传
         }
         const hasStatus = this.errorUids.includes(errorInfo.errorUid)
         if (hasStatus) return false

@@ -24,6 +24,7 @@ export default class Monitor {
         this.userVitals = new UserVitals({ ...this.send, isExposure: !!isExposure })
         this.errorVitals = new ErrorVitals({
             behaviorTracking: this.userVitals.behaviorTracking,
+            behaviorLen: -10,
             ...this.send
         })
         this.customHandler = this.userVitals.initCustomerHandler()

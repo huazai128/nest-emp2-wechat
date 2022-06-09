@@ -131,7 +131,12 @@ export interface ExceptionMetrics {
 
 export interface SendExtend {
     sendLog: (params: any) => void
-    behaviorTracking?: BehaviorStore
+
+}
+
+export interface ErrorExtend {
+    behaviorTracking: BehaviorStore
+    behaviorLen?: number
 }
 
 
