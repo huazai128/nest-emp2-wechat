@@ -82,6 +82,11 @@ export interface BehaviorStack {
 }
 
 
+/**
+ * 上报视频播放、音频等
+ * @export
+ * @interface CustomAnalyticsData
+ */
 export interface CustomAnalyticsData {
     // 事件类别 互动的对象
     eventCategory: string;

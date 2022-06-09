@@ -3,6 +3,12 @@ import { proxyFetch, proxyXmlHttp } from "./httpProxy";
 import { ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
 import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
 
+/**
+ *错误采集上报
+ * @export
+ * @class ErrorVitals
+ * @extends {CommonExtend}
+ */
 export default class ErrorVitals extends CommonExtend {
     private errorUids: Array<string>
     constructor(data: IProps) {
