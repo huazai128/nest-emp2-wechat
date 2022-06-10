@@ -6,7 +6,6 @@ import logger from "@app/utils/logger";
 import { Response, Request } from 'express'
 import { get, isString } from 'lodash'
 
-
 /**
  * 错误拦截，可以针对接口、页面、权限等异常拦截进行处理
  * @export
