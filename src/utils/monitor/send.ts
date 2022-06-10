@@ -162,6 +162,7 @@ export default class SendLog extends MetricsStore {
         img.src = `${url}`
     }
 
+
     /**
      * 发送日志
      * @param {*} params
@@ -181,7 +182,10 @@ export default class SendLog extends MetricsStore {
         console.log(params)
         // params = JSON.stringify()
         if (!!window.navigator?.sendBeacon) {
-            window.navigator?.sendBeacon(this.url, params)
+            const formData = new FormData()
+            // 看怎么上传，
+            formData.append('key', window.btoa(encodeURIComponent(params)))
+            window.navigator?.sendBeacon(this.url, formData)
         } else {
             this.sendImage(this.url)
         }
