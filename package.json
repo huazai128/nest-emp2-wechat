@@ -71,6 +71,7 @@
         "request": "^2.88.2",
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
+        "sendbeacon-polyfill": "^1.0.0",
         "tnwx": "^2.5.6",
         "web-vitals": "^2.1.4"
     },
