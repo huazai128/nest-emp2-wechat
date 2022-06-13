@@ -183,8 +183,8 @@ export default class SendLog extends MetricsStore {
         // params = JSON.stringify()
         if (!!window.navigator?.sendBeacon) {
             const formData = new FormData()
-            // 看怎么上传，
-            formData.append('key', window.btoa(encodeURIComponent(params)))
+            // 看怎么上传，解析成参数发送
+            // formData.append('key', window.btoa(encodeURIComponent(params)))
             window.navigator?.sendBeacon(this.url, formData)
         } else {
             this.sendImage(this.url)
