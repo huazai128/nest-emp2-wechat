@@ -1,8 +1,9 @@
 import BehaviorStore from "./behaviorStore";
 import CommonExtend, { IProps } from "./commonExtend";
 import { proxyFetch, proxyXmlHttp } from "./httpProxy";
-import { BehaviorStack, ErrorExtend, ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
+import { ErrorExtend, ErrorInfo, ExceptionMetrics, HttpMetrics, MechanismType } from "./interfaces";
 import { getErrorKey, getErrorUid, parseStackFrames } from "./utils";
+import ErrorStackParser from 'error-stack-parser'
 
 /**
  *错误采集上报
@@ -55,6 +56,7 @@ export default class ErrorVitals extends CommonExtend {
             // 这里只搜集js 错误
             if (getErrorKey(event) !== MechanismType.JS) return false
             const errUid = getErrorUid(`${MechanismType.JS}-${event.message}-${event.filename}`)
+            console.log(ErrorStackParser.parse(event.error), parseStackFrames(event.error))
             const errInfo = {
                 // 上报错误归类
                 reportsType: MechanismType.JS,

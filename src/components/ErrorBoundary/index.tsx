@@ -8,7 +8,7 @@ interface IState {
  * 用于处理React 组件 错误，并上报错误
  * @template T
  * @param {*} WrappedComponent
- * @param {string} name 组件名称， 在webpack打包后无法获取组件name
+ * @param {string} name 组件名称， 在webpack打包后无法获取组件name，传递组件名称、能够快速定位问题
  * @return {*} 
  */
 function ErrorBoundaryHoc<T>(WrappedComponent: any, name: string) {

@@ -14,7 +14,9 @@ const List = () => {
         // const i = 1
         // i.map(() => { }) // JS 错误
 
-        Promise.reject('中文')
+        // Promise.reject('中文')
+        // Promise.resolve().then(() => console.log(c));
+
 
     }, [])
 
